@@ -1,6 +1,7 @@
 # MCPSync
 
 [![CI](https://github.com/anush-data-portfolio/MCPSync/actions/workflows/ci.yml/badge.svg)](https://github.com/anush-data-portfolio/MCPSync/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/anush-data-portfolio/MCPSync/branch/main/graph/badge.svg)](https://codecov.io/gh/anush-data-portfolio/MCPSync)
 [![Go Version](https://img.shields.io/github/go-mod/go-version/anush-data-portfolio/MCPSync)](https://go.dev/)
 [![Release](https://img.shields.io/github/v/release/anush-data-portfolio/MCPSync)](https://github.com/anush-data-portfolio/MCPSync/releases)
 [![npm](https://img.shields.io/npm/v/@anushkrishnav/mcpsync?logo=npm)](https://www.npmjs.com/package/@anushkrishnav/mcpsync)

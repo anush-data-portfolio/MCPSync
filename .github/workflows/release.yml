@@ -50,7 +50,7 @@ jobs:
           CGO_ENABLED: "0"
         run: |
           mkdir -p dist
-          go build -o dist/${{ matrix.asset }} .
+          go build -o dist/${{ matrix.asset }} ./mcpsync
 
       - name: Upload binary artifact
         uses: actions/upload-artifact@v4
@@ -123,5 +123,5 @@ jobs:
       - name: Install and run from Go module
         run: |
           sleep 30
-          go install github.com/anush-data-portfolio/MCPSync@${{ github.ref_name }}
-          "$HOME/go/bin/MCPSync" --version
+          go install github.com/anush-data-portfolio/MCPSync/mcpsync@${{ github.ref_name }}
+          "$HOME/go/bin/mcpsync" --version

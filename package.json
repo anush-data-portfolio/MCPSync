@@ -1,6 +1,6 @@
 {
   "name": "@anushkrishnav/mcpsync",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Sync MCP server configurations across all your AI coding agents",
   "license": "MIT",
   "bin": {
