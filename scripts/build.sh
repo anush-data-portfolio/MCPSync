@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-VERSION=${1:-"0.1.0"}
+VERSION=${1:-"latest"}
 OUTPUT_DIR="dist"
 
 mkdir -p "$OUTPUT_DIR"

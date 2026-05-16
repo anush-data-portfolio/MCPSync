@@ -104,15 +104,48 @@ mcpsync now -p output.json   # Also save merged config to a file
 
 ### `mcpsync get`
 
-Print the current merged MCP server list as JSON. Safe to pipe.
+Show the current merged MCP server list. Colored table on a terminal; clean JSON when piped.
 
 ```bash
-mcpsync get
-mcpsync get > merged.json
-mcpsync get | pbcopy      # copy to clipboard (macOS)
+mcpsync get               # colored table in the terminal
+mcpsync get --json        # syntax-highlighted JSON in the terminal
+mcpsync get > merged.json # plain JSON (pipe auto-detected)
+mcpsync get | pbcopy      # plain JSON to clipboard (macOS)
 ```
 
-Conflicts and warnings go to stderr, so the JSON on stdout stays clean.
+**Terminal table view** (`mcpsync get`):
+```
+  MCP Servers (6)
+
+  kaggle-mcp              http    https://www.kaggle.com/mcp           [headers]
+  magicuidesign-mcp       stdio   npx  -y @magicuidesign/mcp@latest
+  playwright              stdio   npx  -y @playwright/mcp@latest
+  shadcn                  stdio   npx  shadcn@latest mcp
+  sqlite                  stdio   npx  -y mcp-sqlite
+  task-manager            stdio   task-manager
+```
+Colors: server names in **cyan**, `stdio` in green, `http`/`sse` in blue, commands in yellow, `[headers]`/`[env]` badges in magenta.
+
+**Syntax-highlighted JSON** (`mcpsync get --json`):
+```json
+{
+  "mcpServers": {
+    "kaggle-mcp": {
+      "headers": { "Authorization": "Bearer ..." },
+      "type": "http",
+      "url": "https://www.kaggle.com/mcp"
+    },
+    "playwright": {
+      "args": ["-y", "@playwright/mcp@latest"],
+      "command": "npx",
+      "type": "stdio"
+    }
+  }
+}
+```
+Colors: `"mcpServers"` in bold, server name keys in **cyan**, field keys (`"type"`, `"command"`, `"args"`, `"url"`, `"headers"`) in yellow, nested keys in magenta. Values are uncolored so the output stays readable at a glance.
+
+Conflicts and warnings go to stderr, so piped output is always clean JSON.
 
 ### `mcpsync list`
 
@@ -126,6 +159,7 @@ Show all supported agents and whether their configs were found.
   ✗  VS Code                 ~/.vscode/mcp.json                        [not found]
   ...
 ```
+Colors: detected agents (✓) in green, missing agents (✗) dimmed, server counts in cyan.
 
 ### `mcpsync add --path <file>`
 
@@ -258,6 +292,7 @@ This means all your Claude Code projects get the same MCP server set after synci
 | `--maintain` | `true` | Back up original files as `.old.json` before writing |
 | `--no-maintain` | — | Skip backups |
 | `-p`, `--path <file>` | — | (`now` only) Also write merged JSON to this file |
+| `--json` | — | (`get` only) Force syntax-highlighted JSON output even on a terminal |
 
 ---
 
@@ -272,7 +307,7 @@ GitHub shows a **"Cite this repository"** button in the sidebar (powered by [`CI
   author  = {anushkrishnav},
   title   = {{MCPSync}: Sync MCP Server Configurations Across AI Coding Agents},
   year    = {2026},
-  version = {0.1.0},
+  version = {0.1.1},
   url     = {https://github.com/anush-data-portfolio/MCPSync},
   license = {MIT}
 }
@@ -280,7 +315,7 @@ GitHub shows a **"Cite this repository"** button in the sidebar (powered by [`CI
 
 **APA:**
 ```
-anushkrishnav. (2026). MCPSync (Version 0.1.0) [Computer software].
+anushkrishnav. (2026). MCPSync (Version 0.1.1) [Computer software].
 https://github.com/anush-data-portfolio/MCPSync
 ```
 

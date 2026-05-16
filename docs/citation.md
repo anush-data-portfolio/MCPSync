@@ -13,7 +13,7 @@ GitHub also renders a **"Cite this repository"** button in the sidebar using [`C
   title        = {{MCPSync}: Sync MCP Server Configurations Across AI Coding Agents},
   year         = {2026},
   month        = {5},
-  version      = {0.1.0},
+  version      = {latest},
   url          = {https://github.com/anush-data-portfolio/MCPSync},
   license      = {MIT},
   abstract     = {A CLI tool that synchronizes Model Context Protocol (MCP) server
@@ -25,7 +25,7 @@ GitHub also renders a **"Cite this repository"** button in the sidebar using [`C
 
 ```
 anushkrishnav. (2026, May 15). MCPSync: Sync MCP server configurations across AI coding agents
-(Version 0.1.0) [Computer software]. GitHub.
+(Version latest) [Computer software]. GitHub.
 https://github.com/anush-data-portfolio/MCPSync
 ```
 
@@ -33,14 +33,14 @@ https://github.com/anush-data-portfolio/MCPSync
 
 ```
 anushkrishnav. MCPSync: Sync MCP Server Configurations Across AI Coding Agents.
-Version 0.1.0, 15 May 2026, github.com/anush-data-portfolio/MCPSync.
+Version latest, 15 May 2026, github.com/anush-data-portfolio/MCPSync.
 ```
 
 ## Chicago 17th Edition
 
 ```
 anushkrishnav. MCPSync: Sync MCP Server Configurations Across AI Coding Agents.
-Version 0.1.0. May 15, 2026. https://github.com/anush-data-portfolio/MCPSync.
+Version latest. May 15, 2026. https://github.com/anush-data-portfolio/MCPSync.
 ```
 
 ## IEEE
@@ -48,13 +48,13 @@ Version 0.1.0. May 15, 2026. https://github.com/anush-data-portfolio/MCPSync.
 ```
 anushkrishnav, "MCPSync: Sync MCP Server Configurations Across AI Coding Agents,"
 GitHub, May 15, 2026. [Online]. Available: https://github.com/anush-data-portfolio/MCPSync.
-Version 0.1.0.
+Version latest.
 ```
 
 ## Plain text
 
 ```
-MCPSync (v0.1.0) by anushkrishnav, 2026.
+MCPSync (vlatest) by anushkrishnav, 2026.
 https://github.com/anush-data-portfolio/MCPSync
 Licensed under MIT.
 ```
@@ -71,7 +71,7 @@ writing back to every agent atomically.
 
 | Property | Value |
 |----------|-------|
-| Version | 0.1.0 |
+| Version | latest |
 | Released | 2026-05-15 |
 | Language | Go (distributed as a single binary; also available via npm) |
 | License | MIT |
