@@ -110,18 +110,15 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public
 
-  verify-go-install:
-    name: Verify go install
+  verify-release:
+    name: Verify release binary
     needs: release
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/setup-go@v5
-        with:
-          go-version: "1.21"
-
-      - name: Install and run from Go module
+      - name: Download and run released binary
         run: |
-          sleep 30
-          go install github.com/anush-data-portfolio/MCPSync/mcpsync@${{ github.ref_name }}
-          "$HOME/go/bin/mcpsync" --version
+          curl -fsSL -o /tmp/mcpsync \
+            "https://github.com/anush-data-portfolio/MCPSync/releases/download/${{ github.ref_name }}/mcpsync-linux-amd64"
+          chmod +x /tmp/mcpsync
+          /tmp/mcpsync --version
