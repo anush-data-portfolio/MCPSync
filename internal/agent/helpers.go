@@ -22,7 +22,10 @@ func resolvePath(p string) string {
 func claudeDesktopPath() string {
 	switch runtime.GOOS {
 	case "darwin":
-		home, _ := os.UserHomeDir()
+		home, err := os.UserHomeDir()
+		if err != nil {
+			return ""
+		}
 		return filepath.Join(home, "Library", "Application Support", "Claude", "claude_desktop_config.json")
 	case "windows":
 		appData := os.Getenv("APPDATA")
@@ -97,9 +100,14 @@ func copyFile(src, dst string, perm os.FileMode) error {
 }
 
 func deepCopyMap(m map[string]any) map[string]any {
-	b, _ := json.Marshal(m)
+	b, err := json.Marshal(m)
+	if err != nil {
+		return m
+	}
 	var out map[string]any
-	json.Unmarshal(b, &out)
+	if err := json.Unmarshal(b, &out); err != nil {
+		return m
+	}
 	return out
 }
 

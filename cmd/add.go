@@ -109,7 +109,7 @@ Example:
 		}
 
 		color.Green("\n  ✓  Registered %q (%s)\n", displayName, resolved)
-		fmt.Println("  Run 'mcpsync list' to verify, then 'mcpsync now' to sync.\n")
+		fmt.Println("  Run 'mcpsync list' to verify, then 'mcpsync now' to sync.")
 		return nil
 	},
 }

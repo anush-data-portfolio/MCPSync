@@ -12,7 +12,10 @@ func (a *claudeCodeAgent) ID() string          { return "claude-code" }
 func (a *claudeCodeAgent) DisplayName() string { return "Claude Code" }
 
 func (a *claudeCodeAgent) DefaultConfigPath() string {
-	home, _ := os.UserHomeDir()
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return ""
+	}
 	return filepath.Join(home, ".claude.json")
 }
 

@@ -1,16 +1,21 @@
 name: Release
 
+# Triggered when a version tag is pushed: git tag v0.2.0 && git push --tags
 on:
   push:
     tags:
       - "v*"
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 permissions:
-  contents: write  # needed to create GitHub Releases
+  contents: write  # create GitHub Releases and upload assets
 
 jobs:
+  # ── Cross-compile binaries ──────────────────────────────────────────────────
   build:
-    name: Build binaries
+    name: Build (${{ matrix.goos }}/${{ matrix.goarch }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -39,14 +44,16 @@ jobs:
           go-version: "1.21"
           cache: true
 
-      - name: Build
+      - name: Build ${{ matrix.asset }}
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
-          CGO_ENABLED: 0
+          CGO_ENABLED: "0"
           VERSION: ${{ github.ref_name }}
         run: |
-          go build -ldflags="-s -w -X github.com/anush-data-portfolio/MCPSync/cmd.version=${VERSION}" \
+          mkdir -p dist
+          go build \
+            -ldflags="-s -w -X github.com/anush-data-portfolio/MCPSync/cmd.version=${VERSION}" \
             -o dist/${{ matrix.asset }} .
 
       - name: Upload artifact
@@ -55,25 +62,31 @@ jobs:
           name: ${{ matrix.asset }}
           path: dist/${{ matrix.asset }}
 
+  # ── Create GitHub Release with all binaries ─────────────────────────────────
   release:
-    name: Create GitHub Release
+    name: GitHub Release
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download all artifacts
+      - name: Download all binary artifacts
         uses: actions/download-artifact@v4
         with:
           path: dist/
           merge-multiple: true
 
-      - name: Create Release and upload binaries
+      - name: List binaries
+        run: ls -lh dist/
+
+      - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           files: dist/*
           generate_release_notes: true
+          fail_on_unmatched_files: true
 
+  # ── Publish npm package ─────────────────────────────────────────────────────
   publish-npm:
     name: Publish to npm
     needs: release
@@ -86,13 +99,29 @@ jobs:
           node-version: "20"
           registry-url: "https://registry.npmjs.org"
 
-      - name: Set version from tag
+      - name: Set version from tag (strip leading v)
         run: |
-          # Strip the leading "v" from the tag (v0.1.0 → 0.1.0)
-          VERSION=${GITHUB_REF_NAME#v}
+          VERSION="${GITHUB_REF_NAME#v}"
           npm version "$VERSION" --no-git-tag-version
 
-      - name: Publish
+      - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public
+
+  # ── Verify go install works after release ────────────────────────────────────
+  verify-go-install:
+    name: Verify go install
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+
+      - name: go install from module proxy
+        run: |
+          # Wait a moment for the release to propagate to pkg.go.dev
+          sleep 30
+          go install github.com/anush-data-portfolio/MCPSync@${{ github.ref_name }}
+          mcpsync --version

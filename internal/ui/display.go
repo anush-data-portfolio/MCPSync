@@ -3,9 +3,10 @@ package ui
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/anush-data-portfolio/MCPSync/internal/agent"
+	"os"
 	"strings"
 
+	"github.com/anush-data-portfolio/MCPSync/internal/agent"
 	"github.com/fatih/color"
 )
 
@@ -21,7 +22,7 @@ var (
 
 func PrintBanner() {
 	bold.Println("\n  MCPSync — MCP Config Sync")
-	dim.Println("  Sync MCP servers across all your AI agents\n")
+	dim.Println("  Sync MCP servers across all your AI agents")
 }
 
 func PrintAgentTable(infos []agent.AgentInfo) {
@@ -190,7 +191,11 @@ func PrintMergedJSON(servers []agent.NormalizedServer) {
 	}
 
 	out := map[string]any{"mcpServers": mcpServers}
-	b, _ := json.MarshalIndent(out, "", "  ")
+	b, err := json.MarshalIndent(out, "", "  ")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error: could not marshal JSON: %v\n", err)
+		return
+	}
 	fmt.Println(string(b))
 }
 
@@ -217,7 +222,10 @@ func WriteMergedJSONToPath(path string, servers []agent.NormalizedServer) error 
 	}
 	out := map[string]any{"mcpServers": mcpServers}
 
-	b, _ := json.MarshalIndent(out, "", "  ")
+	b, err := json.MarshalIndent(out, "", "  ")
+	if err != nil {
+		return fmt.Errorf("marshal JSON: %w", err)
+	}
 	b = append(b, '\n')
 	return writeFile(path, b)
 }

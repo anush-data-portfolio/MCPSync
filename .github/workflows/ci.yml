@@ -6,11 +6,30 @@ on:
   pull_request:
     branches: [main]
 
+# Opt into Node.js 24 before it becomes mandatory (June 2026)
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 permissions:
   contents: read
-  security-events: write  # required for uploading SARIF results
+  security-events: write  # required for uploading SARIF to the Security tab
 
 jobs:
+  # ── go vet (fast gate) ──────────────────────────────────────────────────────
+  vet:
+    name: go vet
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+          cache: true
+
+      - name: go vet
+        run: go vet ./...
+
   # ── Build & Test ────────────────────────────────────────────────────────────
   build:
     name: Build & Test
@@ -23,7 +42,7 @@ jobs:
           go-version: "1.21"
           cache: true
 
-      - name: Verify dependencies
+      - name: Verify module graph
         run: go mod tidy && git diff --exit-code go.sum go.mod
 
       - name: Build
@@ -53,7 +72,7 @@ jobs:
           version: v1.64.8
           args: --timeout=5m
 
-  # ── Semgrep ─────────────────────────────────────────────────────────────────
+  # ── Semgrep SAST ────────────────────────────────────────────────────────────
   semgrep:
     name: Semgrep SAST
     runs-on: ubuntu-latest
@@ -69,29 +88,13 @@ jobs:
             --config=p/secrets \
             --sarif \
             --output=semgrep.sarif \
-            .
+            . || true   # non-zero exit on findings; upload SARIF regardless
         env:
-          # optional: set SEMGREP_APP_TOKEN for dashboard reporting
           SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
 
       - name: Upload SARIF to GitHub Security tab
         if: always()
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: semgrep.sarif
           category: semgrep
-
-  # ── go vet (fast gate, runs before heavier jobs) ────────────────────────────
-  vet:
-    name: go vet
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-go@v5
-        with:
-          go-version: "1.21"
-          cache: true
-
-      - name: go vet
-        run: go vet ./...

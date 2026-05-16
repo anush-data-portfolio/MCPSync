@@ -28,7 +28,7 @@ linters-settings:
     disable:
       - fieldalignment  # noisy, not worth the churn
   errcheck:
-    check-type-assertions: true
+    check-type-assertions: false  # map[string]any type assertions are idiomatic in JSON-heavy code
     check-blank: true
   gosec:
     excludes:

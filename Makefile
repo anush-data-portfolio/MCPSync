@@ -168,6 +168,13 @@ hooks-run: ## Run pre-commit hooks against all files right now
 	@pre-commit run --all-files
 
 # ─────────────────────────────────────────────────────────────────────────────
+##@ Release
+
+.PHONY: release
+release: ## Cut a new release: make release VERSION=v0.2.0
+	@test -n "$(VERSION)" || (printf "$(YELLOW)Usage: make release VERSION=v0.2.0$(RESET)\n" && exit 1)
+	@bash scripts/release.sh $(VERSION)
+
 ##@ Maintenance
 # ─────────────────────────────────────────────────────────────────────────────
 

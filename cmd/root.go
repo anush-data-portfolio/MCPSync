@@ -11,6 +11,9 @@ var Maintain bool
 var noMaintain bool
 var CustomPaths = map[string]string{}
 
+// version is set at build time via -ldflags "-X github.com/anush-data-portfolio/MCPSync/cmd.version=vX.Y.Z"
+var version = "dev"
+
 var rootCmd = &cobra.Command{
 	Use:   "mcpsync",
 	Short: "Sync MCP server configs across AI coding agents",
@@ -18,7 +21,7 @@ var rootCmd = &cobra.Command{
 merges them into a single deduplicated list, and writes back to every agent.
 
 Run 'mcpsync now' to sync everything in one shot.`,
-	Version: "0.1.0",
+	Version: version,
 }
 
 func init() {
