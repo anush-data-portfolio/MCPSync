@@ -133,6 +133,31 @@ func TestCopilotCLIAgent_WriteAlwaysIncludesArgs(t *testing.T) {
 	}
 }
 
+func TestCopilotCLIAgent_WriteUntypedCommandServerGetsLocalAndArgs(t *testing.T) {
+	dir := t.TempDir()
+	p := filepath.Join(dir, "mcp-config.json")
+
+	a := &copilotCLIAgent{}
+	// Server with no type but with a command (e.g., synced from Claude Desktop).
+	// Must get type="local" and args=[] so Copilot CLI schema is satisfied.
+	servers := []NormalizedServer{
+		{Name: "untyped-tool", Type: "", Command: "task-manager"},
+	}
+	if err := a.Write(servers, p, nil, false); err != nil {
+		t.Fatalf("Write: %v", err)
+	}
+
+	raw, _ := readJSON(p)
+	mcpServers, _ := raw["mcpServers"].(map[string]any)
+	tool, _ := mcpServers["untyped-tool"].(map[string]any)
+	if tool["type"] != "local" {
+		t.Errorf("untyped command server should get type='local', got %q", tool["type"])
+	}
+	if _, ok := tool["args"]; !ok {
+		t.Error("untyped command server should get 'args' (Copilot CLI schema requires it)")
+	}
+}
+
 func TestCopilotCLIAgent_Roundtrip(t *testing.T) {
 	dir := t.TempDir()
 	p := filepath.Join(dir, "mcp-config.json")

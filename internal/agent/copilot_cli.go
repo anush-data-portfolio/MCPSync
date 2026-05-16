@@ -45,7 +45,8 @@ func (a *copilotCLIAgent) Write(servers []NormalizedServer, configPath string, r
 	out := map[string]any{}
 	for _, s := range servers {
 		typeStr := s.Type
-		if typeStr == "stdio" {
+		// Treat "stdio" and untyped command-based servers as "local" for Copilot CLI.
+		if typeStr == "stdio" || (typeStr == "" && s.Command != "") {
 			typeStr = "local"
 		}
 		entry := denormalizeServer(s, typeStr)
