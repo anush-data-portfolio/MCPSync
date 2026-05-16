@@ -19,13 +19,8 @@ and displays a colored table. When piped, outputs plain JSON instead.
 
 Use 'mcpsync get raw' to show syntax-highlighted JSON in the terminal.
 Conflicts and warnings are printed to stderr so piped output stays clean.`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		servers, err := loadMergedServers()
-		if err != nil {
-			return err
-		}
-		ui.PrintMergedJSON(servers, false)
-		return nil
+	Run: func(cmd *cobra.Command, args []string) {
+		ui.PrintMergedJSON(loadMergedServers(), false)
 	},
 }
 
@@ -36,17 +31,12 @@ var getRawCmd = &cobra.Command{
 When piped, falls back to plain JSON.
 
 Conflicts and warnings are printed to stderr so piped output stays clean.`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		servers, err := loadMergedServers()
-		if err != nil {
-			return err
-		}
-		ui.PrintMergedJSON(servers, true)
-		return nil
+	Run: func(cmd *cobra.Command, args []string) {
+		ui.PrintMergedJSON(loadMergedServers(), true)
 	},
 }
 
-func loadMergedServers() ([]agent.NormalizedServer, error) {
+func loadMergedServers() []agent.NormalizedServer {
 	infos := sync.DiscoverAgents(CustomPaths)
 
 	var selectedIDs []string
@@ -58,7 +48,7 @@ func loadMergedServers() ([]agent.NormalizedServer, error) {
 
 	if len(selectedIDs) == 0 {
 		fmt.Fprintln(os.Stderr, "No agent configs found. Run 'mcpsync list' to see expected paths.")
-		return nil, nil
+		return nil
 	}
 
 	results, errs := sync.ReadAgents(selectedIDs, CustomPaths)
@@ -72,7 +62,7 @@ func loadMergedServers() ([]agent.NormalizedServer, error) {
 			c.ServerName, c.Kept.SourceAgent, c.Discarded.SourceAgent)
 	}
 
-	return merged.Servers, nil
+	return merged.Servers
 }
 
 func init() {

@@ -307,7 +307,7 @@ GitHub shows a **"Cite this repository"** button in the sidebar (powered by [`CI
   author  = {anushkrishnav},
   title   = {{MCPSync}: Sync MCP Server Configurations Across AI Coding Agents},
   year    = {2026},
-  version = {0.1.1},
+  version = {0.1.2},
   url     = {https://github.com/anush-data-portfolio/MCPSync},
   license = {MIT}
 }
@@ -315,7 +315,7 @@ GitHub shows a **"Cite this repository"** button in the sidebar (powered by [`CI
 
 **APA:**
 ```
-anushkrishnav. (2026). MCPSync (Version 0.1.1) [Computer software].
+anushkrishnav. (2026). MCPSync (Version 0.1.2) [Computer software].
 https://github.com/anush-data-portfolio/MCPSync
 ```
 

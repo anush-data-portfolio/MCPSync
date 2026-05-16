@@ -45,7 +45,7 @@ repos:
 
   # ── Semgrep security scan ─────────────────────────────────────────────────
   - repo: https://github.com/semgrep/semgrep
-    rev: v1.118.0
+    rev: v1.163.0
     hooks:
       - id: semgrep
         name: semgrep (go security)
