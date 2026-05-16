@@ -1,5 +1,6 @@
 dist/
 mcpsync
+!mcpsync/
 mcpsync.exe
 *.tmp
 .DS_Store
@@ -10,7 +11,7 @@ bin/mcpsync
 bin/mcpsync.exe
 
 # npm
-node_modules/.npmrc
+node_modules/
 
 # test / coverage
 coverage.out
