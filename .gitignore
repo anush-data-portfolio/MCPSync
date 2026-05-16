@@ -10,4 +10,4 @@ bin/mcpsync
 bin/mcpsync.exe
 
 # npm
-node_modules/
+node_modules/.npmrc
