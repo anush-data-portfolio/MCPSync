@@ -48,7 +48,14 @@ func (a *copilotCLIAgent) Write(servers []NormalizedServer, configPath string, r
 		if typeStr == "stdio" {
 			typeStr = "local"
 		}
-		out[s.Name] = denormalizeServer(s, typeStr)
+		entry := denormalizeServer(s, typeStr)
+		// Copilot CLI schema requires "args" to always be present for local servers.
+		if typeStr == "local" {
+			if _, hasArgs := entry["args"]; !hasArgs {
+				entry["args"] = []string{}
+			}
+		}
+		out[s.Name] = entry
 	}
 	clone["mcpServers"] = out
 

@@ -36,7 +36,7 @@ RESET  := \033[0m
 build: ## Build binary for the current platform
 	@printf "$(GREEN)Building $(BINARY) $(VERSION)…$(RESET)\n"
 	@mkdir -p $(OUTPUT_DIR)
-	@CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o $(OUTPUT_DIR)/$(BINARY) .
+	@CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o $(OUTPUT_DIR)/$(BINARY) ./mcpsync
 	@printf "$(GREEN)→ $(OUTPUT_DIR)/$(BINARY)$(RESET)\n"
 
 .PHONY: run
@@ -88,7 +88,7 @@ lint-fix: ## Run golangci-lint with --fix
 semgrep: ## Run Semgrep security/quality scan (install via: make setup)
 	@which semgrep > /dev/null 2>&1 || \
 		(printf "$(YELLOW)semgrep not found — run: make setup$(RESET)\n" && exit 1)
-	@semgrep scan --config=auto --lang go ./...
+	@semgrep scan --config=auto .
 
 .PHONY: check
 check: fmt vet lint ## Run all quality checks: fmt + vet + lint
@@ -107,11 +107,11 @@ ci: tidy fmt vet lint test ## Full CI pipeline locally (tidy → fmt → vet →
 build-all: ## Cross-compile for all supported platforms
 	@printf "$(GREEN)Cross-compiling $(BINARY) $(VERSION)…$(RESET)\n"
 	@mkdir -p $(OUTPUT_DIR)
-	@CGO_ENABLED=0 GOOS=darwin  GOARCH=arm64 go build -ldflags="$(LDFLAGS)" -o $(OUTPUT_DIR)/$(BINARY)-darwin-arm64  .
-	@CGO_ENABLED=0 GOOS=darwin  GOARCH=amd64 go build -ldflags="$(LDFLAGS)" -o $(OUTPUT_DIR)/$(BINARY)-darwin-amd64  .
-	@CGO_ENABLED=0 GOOS=linux   GOARCH=amd64 go build -ldflags="$(LDFLAGS)" -o $(OUTPUT_DIR)/$(BINARY)-linux-amd64   .
-	@CGO_ENABLED=0 GOOS=linux   GOARCH=arm64 go build -ldflags="$(LDFLAGS)" -o $(OUTPUT_DIR)/$(BINARY)-linux-arm64   .
-	@CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags="$(LDFLAGS)" -o $(OUTPUT_DIR)/$(BINARY)-windows-amd64.exe .
+	@CGO_ENABLED=0 GOOS=darwin  GOARCH=arm64 go build -ldflags="$(LDFLAGS)" -o $(OUTPUT_DIR)/$(BINARY)-darwin-arm64  ./mcpsync
+	@CGO_ENABLED=0 GOOS=darwin  GOARCH=amd64 go build -ldflags="$(LDFLAGS)" -o $(OUTPUT_DIR)/$(BINARY)-darwin-amd64  ./mcpsync
+	@CGO_ENABLED=0 GOOS=linux   GOARCH=amd64 go build -ldflags="$(LDFLAGS)" -o $(OUTPUT_DIR)/$(BINARY)-linux-amd64   ./mcpsync
+	@CGO_ENABLED=0 GOOS=linux   GOARCH=arm64 go build -ldflags="$(LDFLAGS)" -o $(OUTPUT_DIR)/$(BINARY)-linux-arm64   ./mcpsync
+	@CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags="$(LDFLAGS)" -o $(OUTPUT_DIR)/$(BINARY)-windows-amd64.exe ./mcpsync
 	@printf "$(GREEN)Binaries:$(RESET)\n"
 	@ls -lh $(OUTPUT_DIR)/$(BINARY)-*
 

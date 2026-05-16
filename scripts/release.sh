@@ -41,18 +41,27 @@ echo "Releasing $VERSION..."
 
 TODAY="$(date +%Y-%m-%d)"
 
-# ── 1. package.json ────────────────────────────────────────────────────────────
+# ── 1. cmd/root.go (canonical Go version — also used by `go install`) ──────────
+sed -i 's/^var version = "[^"]*"/var version = "'"$BARE"'"/' cmd/root.go
+echo "  ✓ cmd/root.go → $BARE"
+
+# ── 2. package.json ────────────────────────────────────────────────────────────
 npm version "$BARE" --no-git-tag-version --allow-same-version --silent
 echo "  ✓ package.json → $BARE"
 
-# ── 2. CITATION.cff ───────────────────────────────────────────────────────────
+# ── 3. CITATION.cff ───────────────────────────────────────────────────────────
 # Replace the bare semver on the 'version:' line
 sed -i "s/^version: .*/version: $BARE/" CITATION.cff
 # Update release date
 sed -i "s/^date-released: .*/date-released: \"$TODAY\"/" CITATION.cff
 echo "  ✓ CITATION.cff → $BARE ($TODAY)"
 
-# ── 3. CHANGELOG.md ───────────────────────────────────────────────────────────
+# ── 4. README.md citation block ───────────────────────────────────────────────
+sed -i "s/version = {[0-9][^}]*}/version = {$BARE}/" README.md
+sed -i "s/MCPSync (Version [0-9][^)]*)/MCPSync (Version $BARE)/" README.md
+echo "  ✓ README.md citation block → $BARE"
+
+# ── 5. CHANGELOG.md ───────────────────────────────────────────────────────────
 # Inject a new "Unreleased" section header placeholder after the first ---
 # so the author fills in the notes before pushing (or it stays as a stub).
 CHANGELOG_ENTRY="## [$BARE] — $TODAY"
@@ -65,7 +74,7 @@ else
 fi
 
 # ── 4. Commit version bump ─────────────────────────────────────────────────────
-git add package.json CITATION.cff CHANGELOG.md
+git add cmd/root.go package.json CITATION.cff CHANGELOG.md README.md
 git commit -m "chore: release $VERSION"
 echo "  ✓ committed version bump"
 

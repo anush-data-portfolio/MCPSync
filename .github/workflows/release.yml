@@ -117,8 +117,10 @@ jobs:
 
     steps:
       - name: Download and run released binary
+        env:
+          REF_NAME: ${{ github.ref_name }}
         run: |
           curl -fsSL -o /tmp/mcpsync \
-            "https://github.com/anush-data-portfolio/MCPSync/releases/download/${{ github.ref_name }}/mcpsync-linux-amd64"
+            "https://github.com/anush-data-portfolio/MCPSync/releases/download/${REF_NAME}/mcpsync-linux-amd64"
           chmod +x /tmp/mcpsync
           /tmp/mcpsync --version

@@ -137,7 +137,7 @@ func TestZedAgent_WriteStdioOnly(t *testing.T) {
 	a := &zedAgent{}
 	servers := []NormalizedServer{
 		{Name: "stdio-tool", Type: "stdio", Command: "my-cmd", Args: []string{"--arg"}},
-		{Name: "http-tool", Type: "http", URL: "https://example.com"},  // skipped
+		{Name: "http-tool", Type: "http", URL: "https://example.com"},   // skipped
 		{Name: "sse-tool", Type: "sse", URL: "https://example.com/sse"}, // skipped
 	}
 	if err := a.Write(servers, p, nil, false); err != nil {

@@ -45,7 +45,7 @@ func Merge(results []agent.AgentReadResult) agent.MergeResult {
 					Discarded:  server,
 				})
 			}
-			}
+		}
 	}
 
 	servers := make([]agent.NormalizedServer, 0, len(seen))

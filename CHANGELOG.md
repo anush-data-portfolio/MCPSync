@@ -5,6 +5,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.1.4] — 2026-05-16
+
+### Fixed
+
+- **`go install` path**: correct install command is now `go install github.com/anush-data-portfolio/MCPSync/mcpsync@latest`; Makefile and README updated accordingly.
+- **GitHub Copilot CLI config**: always write `"args": []` for no-argument stdio servers — resolves `Invalid MCP server configuration: args: Required` error on startup.
+
+---
+
 ## [0.1.0] — 2026-05-15
 
 ### Added

@@ -112,6 +112,27 @@ func TestCopilotCLIAgent_WriteConvertsStdioToLocal(t *testing.T) {
 	}
 }
 
+func TestCopilotCLIAgent_WriteAlwaysIncludesArgs(t *testing.T) {
+	dir := t.TempDir()
+	p := filepath.Join(dir, "mcp-config.json")
+
+	a := &copilotCLIAgent{}
+	// Server with no args — Copilot CLI schema requires "args" to be present.
+	servers := []NormalizedServer{
+		{Name: "no-args-tool", Type: "stdio", Command: "some-cmd"},
+	}
+	if err := a.Write(servers, p, nil, false); err != nil {
+		t.Fatalf("Write: %v", err)
+	}
+
+	raw, _ := readJSON(p)
+	mcpServers, _ := raw["mcpServers"].(map[string]any)
+	tool, _ := mcpServers["no-args-tool"].(map[string]any)
+	if _, ok := tool["args"]; !ok {
+		t.Error("Write should always include 'args' for local servers (Copilot CLI schema requires it)")
+	}
+}
+
 func TestCopilotCLIAgent_Roundtrip(t *testing.T) {
 	dir := t.TempDir()
 	p := filepath.Join(dir, "mcp-config.json")

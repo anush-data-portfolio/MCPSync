@@ -47,13 +47,13 @@ npx @anushkrishnav/mcpsync list
 ### Option 2 — Go install
 
 ```bash
-go install github.com/anush-data-portfolio/MCPSync@latest
+go install github.com/anush-data-portfolio/MCPSync/mcpsync@latest
 ```
 
-> **Note:** Go installs the binary as `MCPSync` (capital letters, matching the module path).
+> **Note:** Go installs the binary as `mcpsync`.
 > Make sure `$(go env GOPATH)/bin` is in your PATH, then run:
 > ```bash
-> MCPSync now
+> mcpsync now
 > ```
 
 ### Option 3 — Download a pre-built binary
@@ -314,7 +314,7 @@ GitHub shows a **"Cite this repository"** button in the sidebar (powered by [`CI
   author  = {anushkrishnav},
   title   = {{MCPSync}: Sync MCP Server Configurations Across AI Coding Agents},
   year    = {2026},
-  version = {0.1.3},
+  version = {0.1.4},
   url     = {https://github.com/anush-data-portfolio/MCPSync},
   license = {MIT}
 }
@@ -322,7 +322,7 @@ GitHub shows a **"Cite this repository"** button in the sidebar (powered by [`CI
 
 **APA:**
 ```
-anushkrishnav. (2026). MCPSync (Version 0.1.3) [Computer software].
+anushkrishnav. (2026). MCPSync (Version 0.1.4) [Computer software].
 https://github.com/anush-data-portfolio/MCPSync
 ```
 

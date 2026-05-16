@@ -329,9 +329,9 @@ func TestNormalizeServer(t *testing.T) {
 			},
 		},
 		{
-			name:       "sourceAgent set",
-			serverName: "s",
-			raw:        map[string]any{"type": "stdio", "command": "x"},
+			name:        "sourceAgent set",
+			serverName:  "s",
+			raw:         map[string]any{"type": "stdio", "command": "x"},
 			sourceAgent: "my-agent",
 			checkFn: func(s NormalizedServer) error {
 				if s.SourceAgent != "my-agent" {
