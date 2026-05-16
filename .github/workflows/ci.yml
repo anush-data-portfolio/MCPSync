@@ -1,0 +1,97 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  security-events: write  # required for uploading SARIF results
+
+jobs:
+  # ── Build & Test ────────────────────────────────────────────────────────────
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+          cache: true
+
+      - name: Verify dependencies
+        run: go mod tidy && git diff --exit-code go.sum go.mod
+
+      - name: Build
+        run: |
+          CGO_ENABLED=0 go build \
+            -ldflags="-s -w -X github.com/anush-data-portfolio/MCPSync/cmd.version=ci-${{ github.sha }}" \
+            -o /dev/null .
+
+      - name: Test
+        run: go test ./... -v -count=1
+
+  # ── golangci-lint ───────────────────────────────────────────────────────────
+  lint:
+    name: golangci-lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+          cache: true
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.64.8
+          args: --timeout=5m
+
+  # ── Semgrep ─────────────────────────────────────────────────────────────────
+  semgrep:
+    name: Semgrep SAST
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Semgrep scan (Go security + secrets)
+        run: |
+          semgrep scan \
+            --config=p/golang \
+            --config=p/secrets \
+            --sarif \
+            --output=semgrep.sarif \
+            .
+        env:
+          # optional: set SEMGREP_APP_TOKEN for dashboard reporting
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+
+      - name: Upload SARIF to GitHub Security tab
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep
+
+  # ── go vet (fast gate, runs before heavier jobs) ────────────────────────────
+  vet:
+    name: go vet
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+          cache: true
+
+      - name: go vet
+        run: go vet ./...

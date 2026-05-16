@@ -1,5 +1,12 @@
 # MCPSync
 
+[![CI](https://github.com/anush-data-portfolio/MCPSync/actions/workflows/ci.yml/badge.svg)](https://github.com/anush-data-portfolio/MCPSync/actions/workflows/ci.yml)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/anush-data-portfolio/MCPSync)](https://go.dev/)
+[![Release](https://img.shields.io/github/v/release/anush-data-portfolio/MCPSync)](https://github.com/anush-data-portfolio/MCPSync/releases)
+[![npm](https://img.shields.io/npm/v/@anushkrishnav/mcpsync?logo=npm)](https://www.npmjs.com/package/@anushkrishnav/mcpsync)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Semgrep](https://img.shields.io/badge/security-semgrep-brightgreen?logo=semgrep)](https://semgrep.dev)
+
 **One command to sync MCP server configs across all your AI coding agents.**
 
 If you use multiple AI agents — Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, Gemini CLI, Copilot, Codex, Zed, and more — you know the pain: you add an MCP server to one agent and forget all the others. MCPSync fixes that.

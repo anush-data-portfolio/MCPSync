@@ -11,3 +11,10 @@ bin/mcpsync.exe
 
 # npm
 node_modules/.npmrc
+
+# test / coverage
+coverage.out
+coverage.html
+
+# semgrep output
+semgrep.sarif

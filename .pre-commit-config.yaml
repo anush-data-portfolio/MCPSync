@@ -1,0 +1,57 @@
+repos:
+  # ── General file hygiene ──────────────────────────────────────────────────
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ["--maxkb=1024"]
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
+
+  # ── Go formatting & vetting ───────────────────────────────────────────────
+  - repo: local
+    hooks:
+      - id: go-fmt
+        name: go fmt
+        language: system
+        entry: bash -c 'gofmt -l . | grep -q . && (gofmt -l . && exit 1) || true'
+        types: [go]
+        pass_filenames: false
+
+      - id: go-vet
+        name: go vet
+        language: system
+        entry: go vet ./...
+        types: [go]
+        pass_filenames: false
+
+      - id: go-mod-tidy
+        name: go mod tidy
+        language: system
+        entry: bash -c 'go mod tidy && git diff --exit-code go.sum go.mod'
+        pass_filenames: false
+
+  # ── golangci-lint ─────────────────────────────────────────────────────────
+  - repo: https://github.com/golangci/golangci-lint
+    rev: v1.64.8
+    hooks:
+      - id: golangci-lint
+        args: ["--fast"]  # fast mode skips slow linters on pre-commit
+
+  # ── Semgrep security scan ─────────────────────────────────────────────────
+  - repo: https://github.com/semgrep/semgrep
+    rev: v1.118.0
+    hooks:
+      - id: semgrep
+        name: semgrep (go security)
+        args:
+          - --config=p/golang
+          - --config=p/secrets
+          - --error
+        types: [go]
+        pass_filenames: false

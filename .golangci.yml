@@ -1,0 +1,64 @@
+run:
+  timeout: 5m
+  go: "1.21"
+
+linters:
+  enable:
+    # correctness
+    - govet
+    - errcheck
+    - staticcheck
+    - gosimple
+    - ineffassign
+    - unused
+    # security
+    - gosec
+    # style / maintainability
+    - revive
+    - gocritic
+    - gocyclo
+    - misspell
+    - whitespace
+    - unconvert
+    - unparam
+
+linters-settings:
+  govet:
+    enable-all: true
+    disable:
+      - fieldalignment  # noisy, not worth the churn
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+  gosec:
+    excludes:
+      - G304  # file path from variable — expected in a CLI that reads user-specified files
+      - G306  # permissive file write — config files need 0644
+  gocyclo:
+    min-complexity: 20
+  revive:
+    rules:
+      - name: exported
+        disabled: true  # no doc requirement on exported symbols yet
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - style
+    disabled-checks:
+      - hugeParam
+      - unnamedResult
+  misspell:
+    locale: US
+
+issues:
+  max-same-issues: 5
+  exclude-rules:
+    # test files get relaxed rules
+    - path: _test\.go
+      linters:
+        - gosec
+        - errcheck
+    # generated files
+    - path: \.pb\.go
+      linters:
+        - all
