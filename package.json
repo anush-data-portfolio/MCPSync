@@ -1,5 +1,5 @@
 {
-  "name": "mcpsync",
+  "name": "@anushkrishnav/mcpsync",
   "version": "0.1.0",
   "description": "Sync MCP server configurations across all your AI coding agents",
   "license": "MIT",
@@ -33,10 +33,15 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/anush-data-portfolio/MCPSync.git"
+    "url": "git+https://github.com/anush-data-portfolio/MCPSync.git"
   },
   "bugs": {
     "url": "https://github.com/anush-data-portfolio/MCPSync/issues"
   },
-  "homepage": "https://github.com/anush-data-portfolio/MCPSync#readme"
+  "homepage": "https://github.com/anush-data-portfolio/MCPSync#readme",
+  "main": "bin/mcpsync.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "author": "anushkrishnav"
 }
