@@ -31,13 +31,13 @@ Pick the option that matches your setup — **no runtime required** once install
 ### Option 1 — npm (no Go needed)
 
 ```bash
-npm install -g mcpsync
+npm install -g @anushkrishnav/mcpsync
 mcpsync now
 ```
 
 Or with npx (no install at all):
 ```bash
-npx mcpsync list
+npx @anushkrishnav/mcpsync list
 ```
 
 > The npm package downloads the correct pre-built binary for your platform automatically.
@@ -47,8 +47,13 @@ npx mcpsync list
 
 ```bash
 go install github.com/anush-data-portfolio/MCPSync@latest
-mcpsync now
 ```
+
+> **Note:** Go installs the binary as `MCPSync` (capital letters, matching the module path).
+> Make sure `$(go env GOPATH)/bin` is in your PATH, then run:
+> ```bash
+> MCPSync now
+> ```
 
 ### Option 3 — Download a pre-built binary
 
@@ -108,7 +113,7 @@ Show the current merged MCP server list. Colored table on a terminal; clean JSON
 
 ```bash
 mcpsync get               # colored table in the terminal
-mcpsync get --json        # syntax-highlighted JSON in the terminal
+mcpsync get raw           # syntax-highlighted JSON in the terminal
 mcpsync get > merged.json # plain JSON (pipe auto-detected)
 mcpsync get | pbcopy      # plain JSON to clipboard (macOS)
 ```
@@ -126,7 +131,7 @@ mcpsync get | pbcopy      # plain JSON to clipboard (macOS)
 ```
 Colors: server names in **cyan**, `stdio` in green, `http`/`sse` in blue, commands in yellow, `[headers]`/`[env]` badges in magenta.
 
-**Syntax-highlighted JSON** (`mcpsync get --json`):
+**Syntax-highlighted JSON** (`mcpsync get raw`):
 ```json
 {
   "mcpServers": {
@@ -292,7 +297,8 @@ This means all your Claude Code projects get the same MCP server set after synci
 | `--maintain` | `true` | Back up original files as `.old.json` before writing |
 | `--no-maintain` | — | Skip backups |
 | `-p`, `--path <file>` | — | (`now` only) Also write merged JSON to this file |
-| `--json` | — | (`get` only) Force syntax-highlighted JSON output even on a terminal |
+
+Use `mcpsync get raw` to show syntax-highlighted JSON in the terminal.
 
 ---
 
