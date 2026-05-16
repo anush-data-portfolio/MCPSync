@@ -41,7 +41,7 @@ repos:
     rev: v1.64.8
     hooks:
       - id: golangci-lint
-        args: ["--fast"]  # fast mode skips slow linters on pre-commit
+        args: ["--timeout=5m"]
 
   # ── Semgrep security scan ─────────────────────────────────────────────────
   - repo: https://github.com/semgrep/semgrep

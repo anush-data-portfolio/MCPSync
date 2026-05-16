@@ -6,7 +6,10 @@ import (
 )
 
 func homeDir() string {
-	h, _ := os.UserHomeDir()
+	h, err := os.UserHomeDir()
+	if err != nil {
+		return ""
+	}
 	return h
 }
 

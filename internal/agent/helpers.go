@@ -1,6 +1,7 @@
 package agent
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -53,6 +54,80 @@ func readJSON(p string) (map[string]any, error) {
 		return nil, fmt.Errorf("parse %s: %w", p, err)
 	}
 	return out, nil
+}
+
+// readJSONC reads a JSONC file (JSON with // and /* */ comments).
+// Comments are stripped before parsing; the returned map contains only data.
+// Use this for config files known to allow comments (e.g. Zed settings.json).
+func readJSONC(p string) (map[string]any, error) {
+	data, err := os.ReadFile(p)
+	if os.IsNotExist(err) {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, fmt.Errorf("read %s: %w", p, err)
+	}
+	stripped := stripJSONComments(data)
+	var out map[string]any
+	if err := json.Unmarshal(stripped, &out); err != nil {
+		return nil, fmt.Errorf("parse %s: %w", p, err)
+	}
+	return out, nil
+}
+
+// stripJSONComments removes // line comments and /* block comments */ from
+// JSON bytes without touching content inside string literals.
+func stripJSONComments(src []byte) []byte {
+	buf := make([]byte, 0, len(src))
+	i := 0
+	for i < len(src) {
+		c := src[i]
+
+		// Inside a string: copy verbatim, handle escape sequences.
+		if c == '"' {
+			buf = append(buf, c)
+			i++
+			for i < len(src) {
+				c = src[i]
+				buf = append(buf, c)
+				i++
+				if c == '\\' && i < len(src) {
+					// Escaped character — copy the next byte as-is.
+					buf = append(buf, src[i])
+					i++
+				} else if c == '"' {
+					break
+				}
+			}
+			continue
+		}
+
+		// Single-line comment: skip to end of line.
+		if c == '/' && i+1 < len(src) && src[i+1] == '/' {
+			i += 2
+			for i < len(src) && src[i] != '\n' {
+				i++
+			}
+			continue
+		}
+
+		// Block comment: skip to closing */.
+		if c == '/' && i+1 < len(src) && src[i+1] == '*' {
+			i += 2
+			for i+1 < len(src) {
+				if src[i] == '*' && src[i+1] == '/' {
+					i += 2
+					break
+				}
+				i++
+			}
+			continue
+		}
+
+		buf = append(buf, c)
+		i++
+	}
+	return bytes.TrimSpace(buf)
 }
 
 // writeJSON uses an atomic write (tmp → rename) to prevent corruption.

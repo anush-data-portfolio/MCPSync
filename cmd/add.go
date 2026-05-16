@@ -124,7 +124,10 @@ func autoDetectKey(raw map[string]any) string {
 }
 
 func mcpsyncConfigPath() string {
-	home, _ := os.UserHomeDir()
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return ""
+	}
 	return filepath.Join(home, ".mcpsync", "config.json")
 }
 
@@ -134,7 +137,9 @@ func loadMCPSyncConfig(path string) mcpsyncConfig {
 		return mcpsyncConfig{}
 	}
 	var cfg mcpsyncConfig
-	json.Unmarshal(data, &cfg)
+	if err := json.Unmarshal(data, &cfg); err != nil {
+		return mcpsyncConfig{}
+	}
 	return cfg
 }
 
@@ -142,15 +147,20 @@ func saveMCPSyncConfig(path string, cfg mcpsyncConfig) error {
 	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
 		return err
 	}
-	b, _ := json.MarshalIndent(cfg, "", "  ")
+	b, err := json.MarshalIndent(cfg, "", "  ")
+	if err != nil {
+		return err
+	}
 	b = append(b, '\n')
 	return os.WriteFile(path, b, 0o644)
 }
 
 func resolvePath(p string) string {
 	if strings.HasPrefix(p, "~/") {
-		home, _ := os.UserHomeDir()
-		p = filepath.Join(home, p[2:])
+		home, err := os.UserHomeDir()
+		if err == nil {
+			p = filepath.Join(home, p[2:])
+		}
 	}
 	return p
 }
@@ -159,6 +169,8 @@ func init() {
 	addCmd.Flags().StringVar(&addPath, "path", "", "Path to the agent MCP config file (required)")
 	addCmd.Flags().StringVar(&addID, "id", "", "Agent ID (optional, auto-generated from name)")
 	addCmd.Flags().StringVar(&addName, "name", "", "Display name for this agent")
-	addCmd.MarkFlagRequired("path")
+	if err := addCmd.MarkFlagRequired("path"); err != nil {
+		panic(err)
+	}
 	rootCmd.AddCommand(addCmd)
 }

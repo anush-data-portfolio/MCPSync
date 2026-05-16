@@ -45,7 +45,6 @@ linters-settings:
       - diagnostic
       - style
     disabled-checks:
-      - hugeParam
       - unnamedResult
   misspell:
     locale: US

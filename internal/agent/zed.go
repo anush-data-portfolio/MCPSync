@@ -19,7 +19,7 @@ func (a *zedAgent) ResolvedConfigPath(override string) string {
 func (a *zedAgent) IsPresent(configPath string) bool { return fileExists(configPath) }
 
 func (a *zedAgent) Read(configPath string) (*AgentReadResult, error) {
-	raw, err := readJSON(configPath)
+	raw, err := readJSONC(configPath)
 	if err != nil {
 		return nil, err
 	}

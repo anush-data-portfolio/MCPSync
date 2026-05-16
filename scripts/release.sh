@@ -42,7 +42,7 @@ echo "Releasing $VERSION..."
 TODAY="$(date +%Y-%m-%d)"
 
 # ── 1. package.json ────────────────────────────────────────────────────────────
-npm version "$BARE" --no-git-tag-version --silent
+npm version "$BARE" --no-git-tag-version --allow-same-version --silent
 echo "  ✓ package.json → $BARE"
 
 # ── 2. CITATION.cff ───────────────────────────────────────────────────────────

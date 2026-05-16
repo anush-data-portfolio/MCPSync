@@ -63,9 +63,9 @@ Use --no-maintain to skip backups.`,
 			ui.PrintConflictHeader(len(merged.Conflicts))
 			var resolutions []ui.ConflictResolution
 			for i, conflict := range merged.Conflicts {
-				res, err := ui.ResolveConflict(conflict, i+1, len(merged.Conflicts))
-				if err != nil {
-					return err
+				res, resolveErr := ui.ResolveConflict(conflict, i+1, len(merged.Conflicts))
+				if resolveErr != nil {
+					return resolveErr
 				}
 				resolutions = append(resolutions, res)
 			}
@@ -82,7 +82,7 @@ Use --no-maintain to skip backups.`,
 		confirmed, err := ui.Confirm(fmt.Sprintf("Write %d server(s) to %d agent(s)?",
 			len(merged.Servers), len(selectedIDs)))
 		if err != nil || !confirmed {
-			fmt.Println("\n  Cancelled.")
+			fmt.Println("\n  Canceled.")
 			return nil
 		}
 		fmt.Println()
