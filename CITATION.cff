@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use MCPSync in your work or research, please cite it using the metadata below."
+type: software
+title: MCPSync
+abstract: >-
+  MCPSync is a CLI tool that synchronizes Model Context Protocol (MCP) server
+  configurations across multiple AI coding agents (Claude Desktop, Claude Code,
+  Cursor, VS Code, Windsurf, Gemini CLI, GitHub Copilot, OpenAI Codex CLI, Zed,
+  Continue, and more) in a single command. It auto-discovers agent configs,
+  merges them into one deduplicated list, and writes back to all agents with
+  atomic writes and automatic backups.
+authors:
+  - alias: anushkrishnav
+    email: rm8093@g.rit.edu
+version: 0.1.0
+date-released: "2026-05-15"
+url: "https://github.com/anushkrishnav/mcpsync"
+repository-code: "https://github.com/anushkrishnav/mcpsync"
+license: MIT
+keywords:
+  - mcp
+  - model-context-protocol
+  - ai-agents
+  - developer-tools
+  - cli
+  - go
+  - claude
+  - cursor
+  - vscode
+  - configuration-management

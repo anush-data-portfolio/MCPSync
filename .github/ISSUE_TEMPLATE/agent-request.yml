@@ -1,0 +1,93 @@
+name: "🤖 New Agent Request"
+description: Request support for a new AI coding agent or IDE
+labels: ["agent-request", "good first issue"]
+title: "[Agent Request] <Agent Name>"
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for requesting a new agent! Please fill in as much detail as you can.
+        If you're a developer, adding a new agent is usually ~10 lines of Go — see [CONTRIBUTING.md](../CONTRIBUTING.md).
+
+  - type: input
+    id: agent_name
+    attributes:
+      label: Agent / Tool Name
+      description: The full name of the agent, IDE, or CLI tool
+      placeholder: "e.g. Windsurf, Amazon Q Developer, Cline"
+    validations:
+      required: true
+
+  - type: input
+    id: config_path
+    attributes:
+      label: MCP Config File Path
+      description: The path to the JSON file that stores MCP server configs for this agent. Use `~` for home directory.
+      placeholder: "e.g. ~/.myagent/mcp.json  OR  ~/Library/Application Support/MyAgent/config.json"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: json_key
+    attributes:
+      label: JSON key used for MCP servers
+      description: Which top-level key does this agent use in its config file?
+      options:
+        - "mcpServers  (most common)"
+        - "servers"
+        - "context_servers  (Zed-style)"
+        - "other (describe below)"
+        - "unknown / I'm not sure"
+    validations:
+      required: false
+
+  - type: textarea
+    id: config_sample
+    attributes:
+      label: Sample config (optional but very helpful)
+      description: Paste a snippet of the agent's MCP config JSON. Remove or redact any secrets/tokens.
+      render: json
+      placeholder: |
+        {
+          "mcpServers": {
+            "my-server": {
+              "type": "stdio",
+              "command": "npx",
+              "args": ["my-mcp-server"]
+            }
+          }
+        }
+
+  - type: input
+    id: agent_url
+    attributes:
+      label: Agent homepage or docs URL
+      placeholder: "https://github.com/org/agent  OR  https://docs.myagent.com/mcp"
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system(s) where the agent runs
+      multiple: true
+      options:
+        - macOS (Apple Silicon)
+        - macOS (Intel)
+        - Linux (x86_64)
+        - Linux (ARM64)
+        - Windows
+
+  - type: textarea
+    id: extra_notes
+    attributes:
+      label: Any other notes
+      description: Special schema differences, auth fields, multi-file configs, per-project vs global configs, etc.
+      placeholder: "e.g. Config path differs on Windows, uses TOML not JSON, stores tokens in a separate file…"
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Want to contribute?
+      options:
+        - label: I'd like to submit a PR to add this agent myself
+        - label: I can help test a PR if someone else writes it

@@ -1,0 +1,42 @@
+{
+  "name": "mcpsync",
+  "version": "0.1.0",
+  "description": "Sync MCP server configurations across all your AI coding agents",
+  "license": "MIT",
+  "bin": {
+    "mcpsync": "bin/mcpsync.js"
+  },
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js"
+  },
+  "files": [
+    "bin/mcpsync.js",
+    "scripts/postinstall.js",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "claude",
+    "cursor",
+    "vscode",
+    "windsurf",
+    "gemini",
+    "copilot",
+    "codex",
+    "ai",
+    "sync",
+    "cli"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anushkrishnav/mcpsync.git"
+  },
+  "bugs": {
+    "url": "https://github.com/anushkrishnav/mcpsync/issues"
+  },
+  "homepage": "https://github.com/anushkrishnav/mcpsync#readme"
+}

@@ -1,0 +1,90 @@
+name: "🐛 Bug Report"
+description: Something isn't working as expected
+labels: ["bug"]
+title: "[Bug] <short description>"
+
+body:
+  - type: input
+    id: mcpsync_version
+    attributes:
+      label: MCPSync version
+      placeholder: "mcpsync --version"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - macOS (Apple Silicon)
+        - macOS (Intel)
+        - Linux (x86_64)
+        - Linux (ARM64)
+        - Windows
+    validations:
+      required: true
+
+  - type: dropdown
+    id: affected_agent
+    attributes:
+      label: Affected agent(s)
+      multiple: true
+      options:
+        - Claude Desktop (Anthropic desktop app)
+        - Claude Code (Anthropic CLI)
+        - Cursor
+        - VS Code
+        - Windsurf
+        - Zed
+        - Continue
+        - Gemini CLI
+        - GitHub Copilot CLI
+        - GitHub Copilot (VS Code)
+        - OpenAI Codex CLI
+        - Junie
+        - Custom agent (mcpsync add)
+        - Multiple / all agents
+        - Not agent-specific
+
+  - type: dropdown
+    id: command
+    attributes:
+      label: Which command triggered the bug?
+      options:
+        - mcpsync now
+        - mcpsync get
+        - mcpsync list
+        - mcpsync add
+
+  - type: textarea
+    id: what_happened
+    attributes:
+      label: What happened?
+      description: Describe the bug. Include any error messages verbatim.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Run `mcpsync now`
+        2. Select agent X
+        3. Confirm sync
+        4. See error: …
+
+  - type: textarea
+    id: config_snippet
+    attributes:
+      label: Relevant config snippet (optional)
+      description: A minimal example of the config that causes the issue. Remove secrets/tokens.
+      render: json
