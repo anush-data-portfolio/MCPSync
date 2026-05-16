@@ -16,7 +16,7 @@ const os = require('os');
 
 const pkg = require('../package.json');
 const VERSION = pkg.version;
-const REPO = 'anushkrishnav/mcpsync'; // update before publishing
+const REPO = 'anush-data-portfolio/MCPSync';
 
 // ── Platform detection ────────────────────────────────────────────────────────
 
@@ -51,7 +51,14 @@ function download(url, destPath, redirects = 0) {
 
     https.get(url, { headers: { 'User-Agent': 'mcpsync-postinstall' } }, (res) => {
       if (res.statusCode === 301 || res.statusCode === 302) {
-        return resolve(download(res.headers.location, destPath, redirects + 1));
+        const location = res.headers.location;
+        if (!location) return reject(new Error('Redirect with no location header'));
+        const redirectUrl = new URL(location, url);
+        const origHost = new URL(url).hostname;
+        if (redirectUrl.hostname !== origHost && !redirectUrl.hostname.endsWith('.githubusercontent.com')) {
+          return reject(new Error(`Redirect to untrusted host: ${redirectUrl.hostname}`));
+        }
+        return resolve(download(redirectUrl.href, destPath, redirects + 1));
       }
       if (res.statusCode !== 200) {
         return reject(new Error(`HTTP ${res.statusCode} from ${url}`));

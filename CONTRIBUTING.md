@@ -75,7 +75,7 @@ type Agent interface {
 ## Building locally
 
 ```bash
-git clone https://github.com/anushkrishnav/mcpsync
+git clone https://github.com/anush-data-portfolio/MCPSync
 cd mcpsync
 go mod tidy
 go build -o mcpsync .

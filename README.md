@@ -13,7 +13,7 @@ MCPSync reads every agent's config, merges the MCP servers into one unique list,
 ---
 
 > **Open source** — contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md).
-> Found an agent we don't support? [Open an agent request →](https://github.com/anushkrishnav/mcpsync/issues/new?template=agent-request.yml)
+> Found an agent we don't support? [Open an agent request →](https://github.com/anush-data-portfolio/MCPSync/issues/new?template=agent-request.yml)
 
 ---
 
@@ -39,32 +39,32 @@ npx mcpsync list
 ### Option 2 — Go install
 
 ```bash
-go install github.com/anushkrishnav/mcpsync@latest
+go install github.com/anush-data-portfolio/MCPSync@latest
 mcpsync now
 ```
 
 ### Option 3 — Download a pre-built binary
 
-Download from [Releases](https://github.com/anushkrishnav/mcpsync/releases), make executable, and move to your PATH:
+Download from [Releases](https://github.com/anush-data-portfolio/MCPSync/releases), make executable, and move to your PATH:
 
 ```bash
 # macOS (Apple Silicon)
-curl -Lo mcpsync https://github.com/anushkrishnav/mcpsync/releases/latest/download/mcpsync-darwin-arm64
+curl -Lo mcpsync https://github.com/anush-data-portfolio/MCPSync/releases/latest/download/mcpsync-darwin-arm64
 chmod +x mcpsync && sudo mv mcpsync /usr/local/bin/
 
 # macOS (Intel)
-curl -Lo mcpsync https://github.com/anushkrishnav/mcpsync/releases/latest/download/mcpsync-darwin-amd64
+curl -Lo mcpsync https://github.com/anush-data-portfolio/MCPSync/releases/latest/download/mcpsync-darwin-amd64
 chmod +x mcpsync && sudo mv mcpsync /usr/local/bin/
 
 # Linux (x86_64)
-curl -Lo mcpsync https://github.com/anushkrishnav/mcpsync/releases/latest/download/mcpsync-linux-amd64
+curl -Lo mcpsync https://github.com/anush-data-portfolio/MCPSync/releases/latest/download/mcpsync-linux-amd64
 chmod +x mcpsync && sudo mv mcpsync /usr/local/bin/
 ```
 
 ### Option 4 — Build from source
 
 ```bash
-git clone https://github.com/anushkrishnav/mcpsync
+git clone https://github.com/anush-data-portfolio/MCPSync
 cd mcpsync
 go build -o mcpsync .
 sudo mv mcpsync /usr/local/bin/
@@ -135,7 +135,7 @@ MCPSync saves it to `~/.mcpsync/config.json` and includes it in future syncs.
 
 ## Supported Agents
 
-MCPSync currently supports **12 agents** out of the box. If yours isn't listed, [request it](https://github.com/anushkrishnav/mcpsync/issues/new?template=agent-request.yml) or add it yourself — it's usually ~10 lines of Go.
+MCPSync currently supports **12 agents** out of the box. If yours isn't listed, [request it](https://github.com/anush-data-portfolio/MCPSync/issues/new?template=agent-request.yml) or add it yourself — it's usually ~10 lines of Go.
 
 ### Claude (Anthropic)
 
@@ -167,7 +167,7 @@ MCPSync currently supports **12 agents** out of the box. If yours isn't listed, 
 ### Don't see your agent?
 
 - **Use `mcpsync add --path`** to register any custom config file right now
-- **[Open an agent request issue](https://github.com/anushkrishnav/mcpsync/issues/new?template=agent-request.yml)** — include the config file path and a sample snippet if you have one
+- **[Open an agent request issue](https://github.com/anush-data-portfolio/MCPSync/issues/new?template=agent-request.yml)** — include the config file path and a sample snippet if you have one
 - **[Submit a PR](CONTRIBUTING.md)** — adding a new agent is usually ~10 lines of Go
 
 ---
@@ -266,7 +266,7 @@ GitHub shows a **"Cite this repository"** button in the sidebar (powered by [`CI
   title   = {{MCPSync}: Sync MCP Server Configurations Across AI Coding Agents},
   year    = {2026},
   version = {0.1.0},
-  url     = {https://github.com/anushkrishnav/mcpsync},
+  url     = {https://github.com/anush-data-portfolio/MCPSync},
   license = {MIT}
 }
 ```
@@ -274,7 +274,7 @@ GitHub shows a **"Cite this repository"** button in the sidebar (powered by [`CI
 **APA:**
 ```
 anushkrishnav. (2026). MCPSync (Version 0.1.0) [Computer software].
-https://github.com/anushkrishnav/mcpsync
+https://github.com/anush-data-portfolio/MCPSync
 ```
 
 More formats (MLA, Chicago, IEEE, plain text): [`docs/citation.md`](docs/citation.md)
@@ -292,6 +292,6 @@ More formats (MLA, Chicago, IEEE, plain text): [`docs/citation.md`](docs/citatio
 MCPSync is open source and community-driven. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 - **Add an agent** — ~10 lines of Go, see the contributing guide
-- **Report a bug** — [open a bug report](https://github.com/anushkrishnav/mcpsync/issues/new?template=bug_report.yml)
-- **Request an agent** — [open an agent request](https://github.com/anushkrishnav/mcpsync/issues/new?template=agent-request.yml)
-- **General ideas** — [open a discussion](https://github.com/anushkrishnav/mcpsync/discussions)
+- **Report a bug** — [open a bug report](https://github.com/anush-data-portfolio/MCPSync/issues/new?template=bug_report.yml)
+- **Request an agent** — [open an agent request](https://github.com/anush-data-portfolio/MCPSync/issues/new?template=agent-request.yml)
+- **General ideas** — [open a discussion](https://github.com/anush-data-portfolio/MCPSync/discussions)

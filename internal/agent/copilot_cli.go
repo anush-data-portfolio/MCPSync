@@ -27,10 +27,10 @@ func (a *copilotCLIAgent) Read(configPath string) (*AgentReadResult, error) {
 	}
 
 	rawServers, _ := raw["mcpServers"].(map[string]any)
-	servers := normalizeServersMap(rawServers, a.id)
+	servers := normalizeServersMap(rawServers, a.ID())
 
 	return &AgentReadResult{
-		AgentID:   a.id,
+		AgentID:   a.ID(),
 		Servers:   servers,
 		RawConfig: raw,
 	}, nil

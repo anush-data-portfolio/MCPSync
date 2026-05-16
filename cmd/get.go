@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"fmt"
-	"mcpsync/internal/merge"
-	"mcpsync/internal/sync"
-	"mcpsync/internal/ui"
+	"github.com/anush-data-portfolio/MCPSync/internal/merge"
+	"github.com/anush-data-portfolio/MCPSync/internal/sync"
+	"github.com/anush-data-portfolio/MCPSync/internal/ui"
 	"os"
 
 	"github.com/spf13/cobra"

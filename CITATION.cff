@@ -14,8 +14,8 @@ authors:
     email: rm8093@g.rit.edu
 version: 0.1.0
 date-released: "2026-05-15"
-url: "https://github.com/anushkrishnav/mcpsync"
-repository-code: "https://github.com/anushkrishnav/mcpsync"
+url: "https://github.com/anush-data-portfolio/MCPSync"
+repository-code: "https://github.com/anush-data-portfolio/MCPSync"
 license: MIT
 keywords:
   - mcp

@@ -1,7 +1,7 @@
 package sync
 
 import (
-	"mcpsync/internal/agent"
+	"github.com/anush-data-portfolio/MCPSync/internal/agent"
 )
 
 func DiscoverAgents(customPaths map[string]string) []agent.AgentInfo {

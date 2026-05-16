@@ -1,7 +1,7 @@
 package merge
 
 import (
-	"mcpsync/internal/agent"
+	"github.com/anush-data-portfolio/MCPSync/internal/agent"
 	"sort"
 )
 

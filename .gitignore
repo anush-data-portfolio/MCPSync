@@ -3,6 +3,7 @@ mcpsync
 mcpsync.exe
 *.tmp
 .DS_Store
+*.db
 
 # Downloaded binaries from postinstall — not committed, built by CI
 bin/mcpsync

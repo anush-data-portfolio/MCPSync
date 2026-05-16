@@ -3,7 +3,7 @@ package ui
 import (
 	"encoding/json"
 	"fmt"
-	"mcpsync/internal/agent"
+	"github.com/anush-data-portfolio/MCPSync/internal/agent"
 	"strings"
 
 	"github.com/fatih/color"
@@ -149,7 +149,7 @@ func PrintStarPrompt() {
 	fmt.Println()
 	fmt.Printf("  %s\n", dim.Sprint(rule))
 	fmt.Printf("  %s  Enjoying MCPSync? Star the repo to support the project:\n", yellow.Sprint("⭐"))
-	fmt.Printf("      %s\n", cyan.Sprint("https://github.com/anushkrishnav/mcpsync"))
+	fmt.Printf("      %s\n", cyan.Sprint("https://github.com/anush-data-portfolio/MCPSync"))
 	fmt.Printf("  %s\n\n", dim.Sprint(rule))
 }
 

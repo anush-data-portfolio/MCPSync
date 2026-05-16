@@ -53,14 +53,20 @@ func readJSON(p string) (map[string]any, error) {
 }
 
 // writeJSON uses an atomic write (tmp → rename) to prevent corruption.
+// It preserves the original file's permissions; new files are created with 0o600.
 func writeJSON(p string, data map[string]any, maintain bool) error {
 	if err := os.MkdirAll(filepath.Dir(p), 0o755); err != nil {
 		return fmt.Errorf("mkdir %s: %w", filepath.Dir(p), err)
 	}
 
+	perm := os.FileMode(0o600)
+	if info, err := os.Stat(p); err == nil {
+		perm = info.Mode().Perm()
+	}
+
 	if maintain && fileExists(p) {
 		backupPath := strings.TrimSuffix(p, ".json") + ".old.json"
-		if err := copyFile(p, backupPath); err != nil {
+		if err := copyFile(p, backupPath, perm); err != nil {
 			return fmt.Errorf("backup %s: %w", p, err)
 		}
 	}
@@ -72,7 +78,7 @@ func writeJSON(p string, data map[string]any, maintain bool) error {
 	content = append(content, '\n')
 
 	tmpPath := p + ".tmp"
-	if err := os.WriteFile(tmpPath, content, 0o644); err != nil {
+	if err := os.WriteFile(tmpPath, content, perm); err != nil {
 		return fmt.Errorf("write tmp %s: %w", tmpPath, err)
 	}
 	if err := os.Rename(tmpPath, p); err != nil {
@@ -82,12 +88,12 @@ func writeJSON(p string, data map[string]any, maintain bool) error {
 	return nil
 }
 
-func copyFile(src, dst string) error {
+func copyFile(src, dst string, perm os.FileMode) error {
 	data, err := os.ReadFile(src)
 	if err != nil {
 		return err
 	}
-	return os.WriteFile(dst, data, 0o644)
+	return os.WriteFile(dst, data, perm)
 }
 
 func deepCopyMap(m map[string]any) map[string]any {

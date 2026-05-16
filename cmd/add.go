@@ -3,7 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"mcpsync/internal/ui"
+	"github.com/anush-data-portfolio/MCPSync/internal/ui"
 	"os"
 	"path/filepath"
 	"strings"

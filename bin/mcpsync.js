@@ -22,7 +22,7 @@ if (!fs.existsSync(binaryPath)) {
       '  npx mcpsync@latest           # use npx (downloads automatically)',
       '',
       'Or build from source (requires Go 1.21+):',
-      '  git clone https://github.com/anushkrishnav/mcpsync',
+      '  git clone https://github.com/anush-data-portfolio/MCPSync',
       '  cd mcpsync && go build -o mcpsync . && sudo mv mcpsync /usr/local/bin/',
       '',
     ].join('\n')

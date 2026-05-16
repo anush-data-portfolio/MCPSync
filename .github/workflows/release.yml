@@ -44,8 +44,9 @@ jobs:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
           CGO_ENABLED: 0
+          VERSION: ${{ github.ref_name }}
         run: |
-          go build -ldflags="-s -w -X mcpsync/cmd.version=${{ github.ref_name }}" \
+          go build -ldflags="-s -w -X github.com/anush-data-portfolio/MCPSync/cmd.version=${VERSION}" \
             -o dist/${{ matrix.asset }} .
 
       - name: Upload artifact

@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"mcpsync/internal/sync"
-	"mcpsync/internal/ui"
+	"github.com/anush-data-portfolio/MCPSync/internal/sync"
+	"github.com/anush-data-portfolio/MCPSync/internal/ui"
 
 	"github.com/spf13/cobra"
 )

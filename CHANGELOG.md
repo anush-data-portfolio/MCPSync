@@ -59,7 +59,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 **Distribution**
 - Single binary — no runtime required after build
 - **npm package** — `npm install -g mcpsync` or `npx mcpsync`; downloads the correct pre-built binary for the user's platform automatically via `scripts/postinstall.js`
-- **Go install** — `go install github.com/anushkrishnav/mcpsync@latest`
+- **Go install** — `go install github.com/anush-data-portfolio/MCPSync@latest`
 - **Pre-built binaries** — darwin/linux/windows via GitHub Releases
 - Cross-compile script for all platforms in `scripts/build.sh`
 - GitHub Actions workflow (`.github/workflows/release.yml`) builds all platform binaries and publishes to npm on every `v*` tag push

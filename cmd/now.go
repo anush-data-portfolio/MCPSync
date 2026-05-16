@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"mcpsync/internal/agent"
-	"mcpsync/internal/merge"
-	"mcpsync/internal/sync"
-	"mcpsync/internal/ui"
+	"github.com/anush-data-portfolio/MCPSync/internal/agent"
+	"github.com/anush-data-portfolio/MCPSync/internal/merge"
+	"github.com/anush-data-portfolio/MCPSync/internal/sync"
+	"github.com/anush-data-portfolio/MCPSync/internal/ui"
 	"os"
 	"sort"
 
