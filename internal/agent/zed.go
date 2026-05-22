@@ -73,7 +73,10 @@ func (a *zedAgent) Write(servers []NormalizedServer, configPath string, rawConfi
 	if rawConfig == nil {
 		rawConfig = map[string]any{}
 	}
-	clone := deepCopyMap(rawConfig)
+	clone, err := deepCopyMap(rawConfig)
+	if err != nil {
+		return fmt.Errorf("Zed: copy config: %w", err)
+	}
 
 	contextServers := map[string]any{}
 	var skipped int

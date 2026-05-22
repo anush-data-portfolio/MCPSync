@@ -186,3 +186,21 @@ func TestResolvePath_TildeNoSlash(t *testing.T) {
 		t.Errorf("resolvePath(%q) = %q, want unchanged", p, got)
 	}
 }
+
+// ── saveMCPSyncConfig file permissions ────────────────────────────────────────
+
+func TestSaveMCPSyncConfig_FilePermissions(t *testing.T) {
+	dir := t.TempDir()
+	p := filepath.Join(dir, "config.json")
+
+	if err := saveMCPSyncConfig(p, mcpsyncConfig{Version: 1}); err != nil {
+		t.Fatalf("saveMCPSyncConfig: %v", err)
+	}
+	info, err := os.Stat(p)
+	if err != nil {
+		t.Fatalf("stat: %v", err)
+	}
+	if perm := info.Mode().Perm(); perm != 0o600 {
+		t.Errorf("config file permissions = %o, want 0600", perm)
+	}
+}

@@ -172,7 +172,7 @@ func PrintMergedJSON(servers []agent.NormalizedServer, forceJSON bool) {
 }
 
 func printMergedColoredJSON(servers []agent.NormalizedServer) {
-	mcpServers := buildMCPServersMap(servers)
+	mcpServers := buildMCPServersMap(servers, true)
 	out := map[string]any{"mcpServers": mcpServers}
 	b, err := json.MarshalIndent(out, "", "  ")
 	if err != nil {
@@ -278,7 +278,11 @@ func padRight(s string, width int) string {
 	return s + strings.Repeat(" ", width-len(s))
 }
 
-func buildMCPServersMap(servers []agent.NormalizedServer) map[string]any {
+// buildMCPServersMap converts a slice of NormalizedServer into the mcpServers map
+// structure used for JSON output. When redact is true, env and header values are
+// replaced with "***" to prevent secrets leaking to terminal or pipe output.
+// Pass redact=false only for intentional file writes where real values are needed.
+func buildMCPServersMap(servers []agent.NormalizedServer, redact bool) map[string]any {
 	mcpServers := map[string]any{}
 	for _, s := range servers {
 		entry := map[string]any{"type": s.Type}
@@ -289,13 +293,29 @@ func buildMCPServersMap(servers []agent.NormalizedServer) map[string]any {
 			entry["args"] = s.Args
 		}
 		if len(s.Env) > 0 {
-			entry["env"] = s.Env
+			if redact {
+				redacted := make(map[string]string, len(s.Env))
+				for k := range s.Env {
+					redacted[k] = "***"
+				}
+				entry["env"] = redacted
+			} else {
+				entry["env"] = s.Env
+			}
 		}
 		if s.URL != "" {
 			entry["url"] = s.URL
 		}
 		if len(s.Headers) > 0 {
-			entry["headers"] = s.Headers
+			if redact {
+				redacted := make(map[string]string, len(s.Headers))
+				for k := range s.Headers {
+					redacted[k] = "***"
+				}
+				entry["headers"] = redacted
+			} else {
+				entry["headers"] = s.Headers
+			}
 		}
 		mcpServers[s.Name] = entry
 	}
@@ -303,7 +323,7 @@ func buildMCPServersMap(servers []agent.NormalizedServer) map[string]any {
 }
 
 func printMergedRawJSON(servers []agent.NormalizedServer) {
-	out := map[string]any{"mcpServers": buildMCPServersMap(servers)}
+	out := map[string]any{"mcpServers": buildMCPServersMap(servers, true)}
 	b, err := json.MarshalIndent(out, "", "  ")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: could not marshal JSON: %v\n", err)
@@ -313,7 +333,7 @@ func printMergedRawJSON(servers []agent.NormalizedServer) {
 }
 
 func WriteMergedJSONToPath(path string, servers []agent.NormalizedServer) error {
-	out := map[string]any{"mcpServers": buildMCPServersMap(servers)}
+	out := map[string]any{"mcpServers": buildMCPServersMap(servers, false)}
 	b, err := json.MarshalIndent(out, "", "  ")
 	if err != nil {
 		return fmt.Errorf("marshal JSON: %w", err)

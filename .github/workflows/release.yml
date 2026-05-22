@@ -36,11 +36,11 @@ jobs:
             asset: mcpsync-windows-amd64.exe
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
         with:
-          go-version: "1.21"
+          go-version: "1.22.x"
           cache: true
 
       - name: Build binary
@@ -53,7 +53,7 @@ jobs:
           go build -o dist/${{ matrix.asset }} ./mcpsync
 
       - name: Upload binary artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: ${{ matrix.asset }}
           path: dist/${{ matrix.asset }}
@@ -65,7 +65,7 @@ jobs:
 
     steps:
       - name: Download binaries
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           path: dist
           merge-multiple: true
@@ -73,8 +73,11 @@ jobs:
       - name: List binaries
         run: ls -lh dist
 
+      - name: Generate checksums
+        run: sha256sum dist/* > dist/checksums.txt
+
       - name: Create release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
         with:
           files: dist/*
           generate_release_notes: true
@@ -86,9 +89,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: "20"
           registry-url: "https://registry.npmjs.org"
@@ -122,5 +125,13 @@ jobs:
         run: |
           curl -fsSL -o /tmp/mcpsync \
             "https://github.com/anush-data-portfolio/MCPSync/releases/download/${REF_NAME}/mcpsync-linux-amd64"
+          curl -fsSL -o /tmp/checksums.txt \
+            "https://github.com/anush-data-portfolio/MCPSync/releases/download/${REF_NAME}/checksums.txt"
+          EXPECTED=$(grep 'mcpsync-linux-amd64' /tmp/checksums.txt | awk '{print $1}')
+          ACTUAL=$(sha256sum /tmp/mcpsync | awk '{print $1}')
+          if [ "$EXPECTED" != "$ACTUAL" ]; then
+            echo "Checksum mismatch: expected $EXPECTED, got $ACTUAL" >&2
+            exit 1
+          fi
           chmod +x /tmp/mcpsync
           /tmp/mcpsync --version

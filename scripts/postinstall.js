@@ -13,6 +13,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const crypto = require('crypto');
 
 const pkg = require('../package.json');
 const VERSION = pkg.version;
@@ -82,6 +83,56 @@ function download(url, destPath, redirects = 0) {
   });
 }
 
+// ── Checksum verification ─────────────────────────────────────────────────────
+
+/** Download a URL to a string (for small text files like checksums.txt). */
+function downloadToString(url, redirects = 0) {
+  return new Promise((resolve, reject) => {
+    if (redirects > 5) return reject(new Error('Too many redirects'));
+    https.get(url, { headers: { 'User-Agent': 'mcpsync-postinstall' } }, (res) => {
+      if (res.statusCode === 301 || res.statusCode === 302) {
+        const location = res.headers.location;
+        if (!location) return reject(new Error('Redirect with no location header'));
+        const redirectUrl = new URL(location, url);
+        if (!redirectUrl.hostname.endsWith('.githubusercontent.com') &&
+            redirectUrl.hostname !== new URL(url).hostname) {
+          return reject(new Error(`Redirect to untrusted host: ${redirectUrl.hostname}`));
+        }
+        return resolve(downloadToString(redirectUrl.href, redirects + 1));
+      }
+      if (res.statusCode !== 200) {
+        return reject(new Error(`HTTP ${res.statusCode}`));
+      }
+      let body = '';
+      res.on('data', (chunk) => { body += chunk; });
+      res.on('end', () => resolve(body));
+      res.on('error', reject);
+    }).on('error', reject);
+  });
+}
+
+/** Parse a checksums.txt line like "<hex>  <filename>" and return the hex for a given filename. */
+function parseChecksum(checksumText, filename) {
+  for (const line of checksumText.split('\n')) {
+    const parts = line.trim().split(/\s+/);
+    if (parts.length >= 2 && parts[1] === filename) {
+      return parts[0];
+    }
+  }
+  return null;
+}
+
+/** Compute SHA-256 of a local file and return hex string. */
+function fileChecksum(filePath) {
+  return new Promise((resolve, reject) => {
+    const hash = crypto.createHash('sha256');
+    const stream = fs.createReadStream(filePath);
+    stream.on('data', (chunk) => hash.update(chunk));
+    stream.on('end', () => resolve(hash.digest('hex')));
+    stream.on('error', reject);
+  });
+}
+
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 async function main() {
@@ -102,10 +153,39 @@ async function main() {
   }
 
   const url = `https://github.com/${REPO}/releases/download/v${VERSION}/${remoteName}`;
+  const checksumsUrl = `https://github.com/${REPO}/releases/download/v${VERSION}/checksums.txt`;
   process.stdout.write(`mcpsync: downloading binary for ${process.platform}/${process.arch}...\n`);
+
+  // Fetch checksums file (non-fatal if unavailable — binary still installs).
+  let checksumText = null;
+  try {
+    checksumText = await downloadToString(checksumsUrl);
+  } catch (e) {
+    warn(`Could not fetch checksums.txt: ${e.message} — skipping verification`);
+  }
 
   try {
     await download(url, destPath);
+
+    // Verify checksum when available.
+    if (checksumText) {
+      const expected = parseChecksum(checksumText, remoteName);
+      if (expected) {
+        const actual = await fileChecksum(destPath);
+        if (actual !== expected) {
+          fs.unlinkSync(destPath);
+          throw new Error(
+            `Checksum mismatch for ${remoteName}:\n` +
+            `  expected: ${expected}\n` +
+            `  actual:   ${actual}`
+          );
+        }
+        process.stdout.write(`mcpsync: checksum verified ✓\n`);
+      } else {
+        warn(`No checksum entry for ${remoteName} in checksums.txt — skipping verification`);
+      }
+    }
+
     fs.chmodSync(destPath, 0o755);
     process.stdout.write(`mcpsync: installed to ${destPath}\n`);
   } catch (e) {

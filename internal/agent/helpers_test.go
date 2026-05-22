@@ -233,7 +233,10 @@ func TestDeepCopyMap(t *testing.T) {
 		},
 	}
 
-	cp := deepCopyMap(original)
+	cp, err := deepCopyMap(original)
+	if err != nil {
+		t.Fatalf("deepCopyMap error: %v", err)
+	}
 
 	// Mutate copy
 	cp["top"] = "mutated"

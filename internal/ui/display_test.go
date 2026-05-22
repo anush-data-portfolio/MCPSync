@@ -213,7 +213,7 @@ func TestBuildMCPServersMap_Minimal(t *testing.T) {
 	servers := []agent.NormalizedServer{
 		{Name: "tool", Type: "stdio", Command: "cmd"},
 	}
-	m := buildMCPServersMap(servers)
+	m := buildMCPServersMap(servers, false)
 	if len(m) != 1 {
 		t.Fatalf("expected 1 entry, got %d", len(m))
 	}
@@ -239,7 +239,7 @@ func TestBuildMCPServersMap_AllFields(t *testing.T) {
 			Env:     map[string]string{"KEY": "val"},
 		},
 	}
-	m := buildMCPServersMap(servers)
+	m := buildMCPServersMap(servers, false)
 	entry, _ := m["full"].(map[string]any)
 	if entry["args"] == nil {
 		t.Error("args should be present")
@@ -253,7 +253,7 @@ func TestBuildMCPServersMap_HTTP(t *testing.T) {
 	servers := []agent.NormalizedServer{
 		{Name: "api", Type: "http", URL: "https://example.com"},
 	}
-	m := buildMCPServersMap(servers)
+	m := buildMCPServersMap(servers, false)
 	entry, _ := m["api"].(map[string]any)
 	if entry["url"] != "https://example.com" {
 		t.Errorf("http entry url wrong: %v", entry["url"])
@@ -264,7 +264,7 @@ func TestBuildMCPServersMap_HTTP(t *testing.T) {
 }
 
 func TestBuildMCPServersMap_Empty(t *testing.T) {
-	m := buildMCPServersMap(nil)
+	m := buildMCPServersMap(nil, false)
 	if len(m) != 0 {
 		t.Errorf("empty input should produce empty map, got %d entries", len(m))
 	}
@@ -564,5 +564,68 @@ func TestPrintMergedJSON_Table_ContainsServerName(t *testing.T) {
 	out := captureOutput(func() { PrintMergedJSON(servers, false) })
 	if !strings.Contains(out, "unique-server-xyz") {
 		t.Errorf("table PrintMergedJSON should contain server name, got: %q", out)
+	}
+}
+
+// ── buildMCPServersMap redaction ──────────────────────────────────────────────
+
+func TestBuildMCPServersMap_Redact_EnvAndHeaders(t *testing.T) {
+	servers := []agent.NormalizedServer{
+		{
+			Name:    "secret",
+			Type:    "http",
+			URL:     "https://api.example.com",
+			Env:     map[string]string{"API_KEY": "super-secret-value"},
+			Headers: map[string]string{"Authorization": "Bearer token123"},
+		},
+	}
+	m := buildMCPServersMap(servers, true)
+	entry, _ := m["secret"].(map[string]any)
+
+	env, _ := entry["env"].(map[string]string)
+	if env["API_KEY"] != "***" {
+		t.Errorf("redact=true: env value should be '***', got %q", env["API_KEY"])
+	}
+	headers, _ := entry["headers"].(map[string]string)
+	if headers["Authorization"] != "***" {
+		t.Errorf("redact=true: header value should be '***', got %q", headers["Authorization"])
+	}
+}
+
+func TestBuildMCPServersMap_NoRedact_PreservesValues(t *testing.T) {
+	servers := []agent.NormalizedServer{
+		{
+			Name:    "plain",
+			Type:    "stdio",
+			Command: "cmd",
+			Env:     map[string]string{"MY_VAR": "real-value"},
+		},
+	}
+	m := buildMCPServersMap(servers, false)
+	entry, _ := m["plain"].(map[string]any)
+	env, _ := entry["env"].(map[string]string)
+	if env["MY_VAR"] != "real-value" {
+		t.Errorf("redact=false: env value should be preserved, got %q", env["MY_VAR"])
+	}
+}
+
+// ── WriteMergedJSONToPath file permissions ────────────────────────────────────
+
+func TestWriteMergedJSONToPath_FilePermissions(t *testing.T) {
+	dir := t.TempDir()
+	p := filepath.Join(dir, "merged.json")
+
+	servers := []agent.NormalizedServer{
+		{Name: "tool", Type: "stdio", Command: "cmd"},
+	}
+	if err := WriteMergedJSONToPath(p, servers); err != nil {
+		t.Fatalf("WriteMergedJSONToPath: %v", err)
+	}
+	info, err := os.Stat(p)
+	if err != nil {
+		t.Fatalf("stat: %v", err)
+	}
+	if perm := info.Mode().Perm(); perm != 0o600 {
+		t.Errorf("file permissions = %o, want 0600", perm)
 	}
 }

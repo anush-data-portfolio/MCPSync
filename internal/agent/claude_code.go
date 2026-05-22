@@ -75,7 +75,10 @@ func (a *claudeCodeAgent) Write(servers []NormalizedServer, configPath string, r
 		return fmt.Errorf("Claude Code: cannot write — config file not found at %s", configPath)
 	}
 
-	clone := deepCopyMap(rawConfig)
+	clone, err := deepCopyMap(rawConfig)
+	if err != nil {
+		return fmt.Errorf("Claude Code: copy config: %w", err)
+	}
 	projects, _ := clone["projects"].(map[string]any)
 	if projects == nil {
 		projects = map[string]any{}

@@ -52,7 +52,10 @@ func (a *StandardAgent) Write(servers []NormalizedServer, configPath string, raw
 	if rawConfig == nil {
 		rawConfig = map[string]any{}
 	}
-	clone := deepCopyMap(rawConfig)
+	clone, err := deepCopyMap(rawConfig)
+	if err != nil {
+		return fmt.Errorf("%s: copy config: %w", a.displayName, err)
+	}
 	clone[a.serverKey] = denormalizeServersSlice(servers, "")
 
 	if err := writeJSON(configPath, clone, maintain); err != nil {

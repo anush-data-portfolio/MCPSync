@@ -152,7 +152,7 @@ func saveMCPSyncConfig(path string, cfg mcpsyncConfig) error {
 		return err
 	}
 	b = append(b, '\n')
-	return os.WriteFile(path, b, 0o644)
+	return os.WriteFile(path, b, 0o600)
 }
 
 func resolvePath(p string) string {
@@ -162,7 +162,7 @@ func resolvePath(p string) string {
 			p = filepath.Join(home, p[2:])
 		}
 	}
-	return p
+	return filepath.Clean(p)
 }
 
 func init() {

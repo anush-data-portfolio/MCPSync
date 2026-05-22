@@ -40,7 +40,10 @@ func (a *copilotCLIAgent) Write(servers []NormalizedServer, configPath string, r
 	if rawConfig == nil {
 		rawConfig = map[string]any{}
 	}
-	clone := deepCopyMap(rawConfig)
+	clone, err := deepCopyMap(rawConfig)
+	if err != nil {
+		return fmt.Errorf("GitHub Copilot CLI: copy config: %w", err)
+	}
 
 	out := map[string]any{}
 	for _, s := range servers {

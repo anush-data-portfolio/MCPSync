@@ -17,7 +17,7 @@ func resolvePath(p string) string {
 			p = filepath.Join(home, p[2:])
 		}
 	}
-	return p
+	return filepath.Clean(p)
 }
 
 func claudeDesktopPath() string {
@@ -174,16 +174,16 @@ func copyFile(src, dst string, perm os.FileMode) error {
 	return os.WriteFile(dst, data, perm)
 }
 
-func deepCopyMap(m map[string]any) map[string]any {
+func deepCopyMap(m map[string]any) (map[string]any, error) {
 	b, err := json.Marshal(m)
 	if err != nil {
-		return m
+		return nil, fmt.Errorf("deepCopyMap marshal: %w", err)
 	}
 	var out map[string]any
 	if err := json.Unmarshal(b, &out); err != nil {
-		return m
+		return nil, fmt.Errorf("deepCopyMap unmarshal: %w", err)
 	}
-	return out
+	return out, nil
 }
 
 func normalizeServer(name string, raw map[string]any, sourceAgent string) NormalizedServer {
