@@ -8,16 +8,12 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+
+	"github.com/anush-data-portfolio/MCPSync/internal/pathutil"
 )
 
 func resolvePath(p string) string {
-	if strings.HasPrefix(p, "~/") {
-		home, err := os.UserHomeDir()
-		if err == nil {
-			p = filepath.Join(home, p[2:])
-		}
-	}
-	return filepath.Clean(p)
+	return pathutil.ResolvePath(p)
 }
 
 func claudeDesktopPath() string {

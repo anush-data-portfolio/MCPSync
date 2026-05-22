@@ -49,7 +49,10 @@ func TestServersEqual(t *testing.T) {
 		{"http equal", agent.NormalizedServer{Type: "http", URL: "https://a.com"}, agent.NormalizedServer{Type: "http", URL: "https://a.com"}, true},
 		{"http different url", agent.NormalizedServer{Type: "http", URL: "https://a.com"}, agent.NormalizedServer{Type: "http", URL: "https://b.com"}, false},
 		{"sse type", agent.NormalizedServer{Type: "sse", URL: "https://x.com"}, agent.NormalizedServer{Type: "sse", URL: "https://x.com"}, true},
-		{"env/headers ignored", base, agent.NormalizedServer{Type: "stdio", Command: "npx", Args: []string{"-y", "@playwright/mcp@latest"}, Env: map[string]string{"K": "v"}}, true},
+		{"env/headers ignored", base, agent.NormalizedServer{Type: "stdio", Command: "npx", Args: []string{"-y", "@playwright/mcp@latest"}, Env: map[string]string{"K": "v"}}, false},
+		{"same env equal", agent.NormalizedServer{Type: "stdio", Command: "cmd", Env: map[string]string{"K": "v"}}, agent.NormalizedServer{Type: "stdio", Command: "cmd", Env: map[string]string{"K": "v"}}, true},
+		{"different env value", agent.NormalizedServer{Type: "stdio", Command: "cmd", Env: map[string]string{"K": "v1"}}, agent.NormalizedServer{Type: "stdio", Command: "cmd", Env: map[string]string{"K": "v2"}}, false},
+		{"different headers", agent.NormalizedServer{Type: "http", URL: "https://a.com", Headers: map[string]string{"Auth": "tok1"}}, agent.NormalizedServer{Type: "http", URL: "https://a.com", Headers: map[string]string{"Auth": "tok2"}}, false},
 	}
 
 	for _, tt := range tests {

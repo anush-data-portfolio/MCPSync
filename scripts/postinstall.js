@@ -156,21 +156,28 @@ async function main() {
   const checksumsUrl = `https://github.com/${REPO}/releases/download/v${VERSION}/checksums.txt`;
   process.stdout.write(`mcpsync: downloading binary for ${process.platform}/${process.arch}...\n`);
 
-  // Fetch checksums file (non-fatal if unavailable — binary still installs).
-  let checksumText = null;
+  // Fetch checksums file — hard-fail if unavailable (security: no verification = no install).
+  let checksumText;
   try {
     checksumText = await downloadToString(checksumsUrl);
   } catch (e) {
-    warn(`Could not fetch checksums.txt: ${e.message} — skipping verification`);
+    // Remove the binary if it was somehow partially written before we got here.
+    if (fs.existsSync(destPath)) fs.unlinkSync(destPath);
+    throw new Error(
+      `Could not fetch checksums.txt — aborting install for security.\n` +
+      `Error: ${e.message}\n\n` +
+      `To install manually:\n` +
+      `  1. Download a binary from: https://github.com/${REPO}/releases/tag/v${VERSION}\n` +
+      `  2. Verify its SHA-256 against checksums.txt from the same release\n`
+    );
   }
 
   try {
     await download(url, destPath);
 
-    // Verify checksum when available.
-    if (checksumText) {
-      const expected = parseChecksum(checksumText, remoteName);
-      if (expected) {
+    // Verify checksum.
+    const expected = parseChecksum(checksumText, remoteName);
+    if (expected) {
         const actual = await fileChecksum(destPath);
         if (actual !== expected) {
           fs.unlinkSync(destPath);
@@ -184,7 +191,6 @@ async function main() {
       } else {
         warn(`No checksum entry for ${remoteName} in checksums.txt — skipping verification`);
       }
-    }
 
     fs.chmodSync(destPath, 0o755);
     process.stdout.write(`mcpsync: installed to ${destPath}\n`);

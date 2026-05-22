@@ -3,11 +3,12 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/anush-data-portfolio/MCPSync/internal/ui"
 	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/anush-data-portfolio/MCPSync/internal/pathutil"
+	"github.com/anush-data-portfolio/MCPSync/internal/ui"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
@@ -156,13 +157,7 @@ func saveMCPSyncConfig(path string, cfg mcpsyncConfig) error {
 }
 
 func resolvePath(p string) string {
-	if strings.HasPrefix(p, "~/") {
-		home, err := os.UserHomeDir()
-		if err == nil {
-			p = filepath.Join(home, p[2:])
-		}
-	}
-	return filepath.Clean(p)
+	return pathutil.ResolvePath(p)
 }
 
 func init() {

@@ -1,6 +1,6 @@
 run:
   timeout: 5m
-  go: "1.21"
+  go: "1.22"
 
 linters:
   enable:
@@ -33,7 +33,7 @@ linters-settings:
   gosec:
     excludes:
       - G304  # file path from variable — expected in a CLI that reads user-specified files
-      - G306  # permissive file write — config files need 0644
+      - G306  # writeJSON preserves existing file perms; new files default to 0o600
   gocyclo:
     min-complexity: 20
   revive:

@@ -12,8 +12,24 @@ permissions:
   contents: write
 
 jobs:
+  # ── Gate: tests must pass before any release artifact is built ──────────────
+  test:
+    name: Test gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version: "1.22.x"
+          cache: true
+
+      - name: Run tests
+        run: go test -race ./...
+
   build:
     name: Build ${{ matrix.asset }}
+    needs: test
     runs-on: ubuntu-latest
 
     strategy:
@@ -50,7 +66,12 @@ jobs:
           CGO_ENABLED: "0"
         run: |
           mkdir -p dist
-          go build -o dist/${{ matrix.asset }} ./mcpsync
+          go build \
+            -ldflags="-s -w \
+              -X github.com/anush-data-portfolio/MCPSync/cmd.version=${{ github.ref_name }} \
+              -X github.com/anush-data-portfolio/MCPSync/cmd.commit=${{ github.sha }} \
+              -X github.com/anush-data-portfolio/MCPSync/cmd.buildTime=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            -o dist/${{ matrix.asset }} ./mcpsync
 
       - name: Upload binary artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -123,9 +144,11 @@ jobs:
         env:
           REF_NAME: ${{ github.ref_name }}
         run: |
-          curl -fsSL -o /tmp/mcpsync \
+          curl -fsSL --retry 5 --retry-delay 10 --retry-all-errors \
+            -o /tmp/mcpsync \
             "https://github.com/anush-data-portfolio/MCPSync/releases/download/${REF_NAME}/mcpsync-linux-amd64"
-          curl -fsSL -o /tmp/checksums.txt \
+          curl -fsSL --retry 5 --retry-delay 10 --retry-all-errors \
+            -o /tmp/checksums.txt \
             "https://github.com/anush-data-portfolio/MCPSync/releases/download/${REF_NAME}/checksums.txt"
           EXPECTED=$(grep 'mcpsync-linux-amd64' /tmp/checksums.txt | awk '{print $1}')
           ACTUAL=$(sha256sum /tmp/mcpsync | awk '{print $1}')
