@@ -173,104 +173,140 @@
 <section id="commands" class="section section-alt">
   <div class="wrap">
     <h2 class="h">Commands</h2>
-    <p class="sub">Four commands cover every workflow. Run any of them with <code>--help</code> for full flags.</p>
+    <p class="sub">Four commands cover every workflow. Run any with <code>--help</code> for full flags.</p>
 
-    <div class="cmd-grid">
-      <article class="cmd-card">
-        <header class="cmd-head">
-          <h3><span class="prompt">$</span> mcpsync now</h3>
-          <p>Auto-discover all agents, merge, and write back.</p>
-        </header>
-        <div class="term">
-          <div class="term-bar">
-            <span class="term-dots"><i></i><i></i><i></i></span>
-            <span class="term-title">interactive sync</span>
-          </div>
-          <div class="term-body">
-            <div class="line"><span class="prompt">$</span> <span class="cmd">mcpsync now</span></div>
-            <div class="line muted">? Select agents to include  ‹space› to toggle, ‹enter› to confirm</div>
-            <div class="line">  <span class="ok">◉</span> Claude Desktop          <span class="hint">3 servers</span></div>
-            <div class="line">  <span class="ok">◉</span> Claude Code             <span class="hint">2 servers</span></div>
-            <div class="line">  <span class="ok">◉</span> Cursor                  <span class="hint">4 servers</span></div>
-            <div class="line">  <span class="dim">◯</span> Zed                     <span class="hint">stdio only</span></div>
-            <div class="line muted">↳ Preview: 6 unique servers, 0 conflicts</div>
-            <div class="line"><span class="ok">✓</span>  Sync complete · 4 files written · 4 backups saved</div>
-          </div>
-        </div>
-        <ul class="flag-list">
-          <li><code>--no-maintain</code> skip <code>.old.json</code> backups</li>
-          <li><code>-p output.json</code> also dump merged config to a file</li>
-        </ul>
-      </article>
+    <div class="slider" id="cmdSlider">
+      <nav class="slider-nav" role="tablist" aria-label="Commands">
+        <button class="slider-tab is-active" role="tab" aria-selected="true" data-slide="0">
+          <span class="prompt">$</span> mcpsync now
+        </button>
+        <button class="slider-tab" role="tab" aria-selected="false" data-slide="1">
+          <span class="prompt">$</span> mcpsync get
+        </button>
+        <button class="slider-tab" role="tab" aria-selected="false" data-slide="2">
+          <span class="prompt">$</span> mcpsync list
+        </button>
+        <button class="slider-tab" role="tab" aria-selected="false" data-slide="3">
+          <span class="prompt">$</span> mcpsync add
+        </button>
+      </nav>
 
-      <article class="cmd-card">
-        <header class="cmd-head">
-          <h3><span class="prompt">$</span> mcpsync get</h3>
-          <p>Show the merged MCP server list. Colored table in terminal, clean JSON when piped.</p>
-        </header>
-        <div class="term">
-          <div class="term-bar">
-            <span class="term-dots"><i></i><i></i><i></i></span>
-            <span class="term-title">merged servers</span>
+      <div class="slider-track">
+        <article class="slide is-active" data-slide="0">
+          <div class="slide-meta">
+            <p>Auto-discover all agents, merge, and write back. Interactive multi-select, side-by-side conflict resolution, atomic writes, automatic backups.</p>
+            <ul class="flag-list">
+              <li><code>--no-maintain</code> skip <code>.old.json</code> backups</li>
+              <li><code>-p output.json</code> also dump merged config to a file</li>
+            </ul>
           </div>
-          <div class="term-body">
-            <div class="line"><span class="prompt">$</span> <span class="cmd">mcpsync get</span></div>
-            <div class="line"></div>
-            <div class="line"><strong>MCP Servers (6)</strong></div>
-            <div class="line"></div>
-            <div class="line"><span class="cyan">kaggle-mcp</span>          <span class="blue">http</span>   https://www.kaggle.com/mcp   <span class="magenta">[headers]</span></div>
-            <div class="line"><span class="cyan">magicuidesign-mcp</span>   <span class="green">stdio</span>  <span class="yellow">npx</span> -y @magicuidesign/mcp@latest</div>
-            <div class="line"><span class="cyan">playwright</span>          <span class="green">stdio</span>  <span class="yellow">npx</span> -y @playwright/mcp@latest</div>
-            <div class="line"><span class="cyan">shadcn</span>              <span class="green">stdio</span>  <span class="yellow">npx</span> shadcn@latest mcp</div>
-            <div class="line"><span class="cyan">sqlite</span>              <span class="green">stdio</span>  <span class="yellow">npx</span> -y mcp-sqlite</div>
-            <div class="line"><span class="cyan">task-manager</span>        <span class="green">stdio</span>  <span class="yellow">task-manager</span></div>
+          <div class="term anim-term">
+            <div class="term-bar">
+              <span class="term-dots"><i></i><i></i><i></i></span>
+              <span class="term-title">interactive sync</span>
+              <button class="copy" data-copy="mcpsync now">copy</button>
+            </div>
+            <div class="term-body">
+              <div class="line" data-type="mcpsync now"><span class="prompt">$</span> <span class="cmd"></span></div>
+              <div class="line muted">? Select agents to include  ‹space› to toggle, ‹enter› to confirm</div>
+              <div class="line">  <span class="ok">◉</span> Claude Desktop          <span class="hint">3 servers</span></div>
+              <div class="line">  <span class="ok">◉</span> Claude Code             <span class="hint">2 servers</span></div>
+              <div class="line">  <span class="ok">◉</span> Cursor                  <span class="hint">4 servers</span></div>
+              <div class="line">  <span class="dim">◯</span> Zed                     <span class="hint">stdio only</span></div>
+              <div class="line muted">↳ Preview: 6 unique servers, 0 conflicts</div>
+              <div class="line"><span class="ok">✓</span>  Sync complete · 4 files written · 4 backups saved</div>
+            </div>
           </div>
-        </div>
-        <ul class="flag-list">
-          <li><code>mcpsync get raw</code> syntax-highlighted JSON in the terminal</li>
-          <li><code>mcpsync get &gt; merged.json</code> plain JSON to file (pipe auto-detected)</li>
-        </ul>
-      </article>
+        </article>
 
-      <article class="cmd-card">
-        <header class="cmd-head">
-          <h3><span class="prompt">$</span> mcpsync list</h3>
-          <p>Show all supported agents and whether their configs were found.</p>
-        </header>
-        <div class="term">
-          <div class="term-bar">
-            <span class="term-dots"><i></i><i></i><i></i></span>
-            <span class="term-title">discover agents</span>
+        <article class="slide" data-slide="1">
+          <div class="slide-meta">
+            <p>Show the current merged MCP server list. Colored table on a terminal; clean JSON when piped.</p>
+            <ul class="flag-list">
+              <li><code>mcpsync get raw</code> syntax-highlighted JSON in the terminal</li>
+              <li><code>mcpsync get &gt; merged.json</code> plain JSON to file (pipe auto-detected)</li>
+            </ul>
           </div>
-          <div class="term-body">
-            <div class="line"><span class="prompt">$</span> <span class="cmd">mcpsync list</span></div>
-            <div class="line"><span class="ok">✓</span>  Claude Desktop          <span class="hint">~/Library/…/claude_desktop_config.json</span>   <span class="cyan">3 servers</span></div>
-            <div class="line"><span class="ok">✓</span>  Claude Code             <span class="hint">~/.claude.json</span>                              <span class="cyan">2 servers</span></div>
-            <div class="line"><span class="ok">✓</span>  GitHub Copilot CLI      <span class="hint">~/.copilot/mcp-config.json</span>                 <span class="cyan">2 servers</span></div>
-            <div class="line"><span class="dim">✗  Cursor                  ~/.cursor/mcp.json                              [not found]</span></div>
-            <div class="line"><span class="dim">✗  VS Code                 ~/.vscode/mcp.json                              [not found]</span></div>
-            <div class="line muted">…12 agents probed</div>
+          <div class="term anim-term">
+            <div class="term-bar">
+              <span class="term-dots"><i></i><i></i><i></i></span>
+              <span class="term-title">merged servers</span>
+              <button class="copy" data-copy="mcpsync get">copy</button>
+            </div>
+            <div class="term-body">
+              <div class="line" data-type="mcpsync get"><span class="prompt">$</span> <span class="cmd"></span></div>
+              <div class="line"></div>
+              <div class="line"><strong>MCP Servers (6)</strong></div>
+              <div class="line"></div>
+              <div class="line"><span class="cyan">kaggle-mcp</span>          <span class="blue">http</span>   https://www.kaggle.com/mcp   <span class="magenta">[headers]</span></div>
+              <div class="line"><span class="cyan">magicuidesign-mcp</span>   <span class="green">stdio</span>  <span class="yellow">npx</span> -y @magicuidesign/mcp@latest</div>
+              <div class="line"><span class="cyan">playwright</span>          <span class="green">stdio</span>  <span class="yellow">npx</span> -y @playwright/mcp@latest</div>
+              <div class="line"><span class="cyan">shadcn</span>              <span class="green">stdio</span>  <span class="yellow">npx</span> shadcn@latest mcp</div>
+              <div class="line"><span class="cyan">sqlite</span>              <span class="green">stdio</span>  <span class="yellow">npx</span> -y mcp-sqlite</div>
+              <div class="line"><span class="cyan">task-manager</span>        <span class="green">stdio</span>  <span class="yellow">task-manager</span></div>
+            </div>
           </div>
-        </div>
-      </article>
+        </article>
 
-      <article class="cmd-card">
-        <header class="cmd-head">
-          <h3><span class="prompt">$</span> mcpsync add</h3>
-          <p>Register a custom agent config that MCPSync didn't auto-detect.</p>
-        </header>
-        <div class="term">
-          <div class="term-bar">
-            <span class="term-dots"><i></i><i></i><i></i></span>
-            <span class="term-title">register custom agent</span>
+        <article class="slide" data-slide="2">
+          <div class="slide-meta">
+            <p>Show every supported agent and whether its config was found on this machine.</p>
+            <ul class="flag-list">
+              <li>Green check → config detected and parsed</li>
+              <li>Dimmed cross → adapter exists but no config present</li>
+            </ul>
           </div>
-          <div class="term-body">
-            <div class="line"><span class="prompt">$</span> <span class="cmd">mcpsync add --path ~/my-agent/mcp.json --name "My Agent"</span></div>
-            <div class="line"><span class="ok">✓</span>  Registered <span class="cyan">My Agent</span> → <span class="hint">~/.mcpsync/config.json</span></div>
-            <div class="line muted">  included in all future syncs</div>
+          <div class="term anim-term">
+            <div class="term-bar">
+              <span class="term-dots"><i></i><i></i><i></i></span>
+              <span class="term-title">discover agents</span>
+              <button class="copy" data-copy="mcpsync list">copy</button>
+            </div>
+            <div class="term-body">
+              <div class="line" data-type="mcpsync list"><span class="prompt">$</span> <span class="cmd"></span></div>
+              <div class="line"><span class="ok">✓</span>  Claude Desktop          <span class="hint">~/Library/…/claude_desktop_config.json</span>   <span class="cyan">3 servers</span></div>
+              <div class="line"><span class="ok">✓</span>  Claude Code             <span class="hint">~/.claude.json</span>                              <span class="cyan">2 servers</span></div>
+              <div class="line"><span class="ok">✓</span>  GitHub Copilot CLI      <span class="hint">~/.copilot/mcp-config.json</span>                 <span class="cyan">2 servers</span></div>
+              <div class="line"><span class="dim">✗  Cursor                  ~/.cursor/mcp.json                              [not found]</span></div>
+              <div class="line"><span class="dim">✗  VS Code                 ~/.vscode/mcp.json                              [not found]</span></div>
+              <div class="line muted">…12 agents probed</div>
+            </div>
           </div>
+        </article>
+
+        <article class="slide" data-slide="3">
+          <div class="slide-meta">
+            <p>Register a custom agent config that MCPSync didn't auto-detect. Saved to <code>~/.mcpsync/config.json</code> and included in future syncs.</p>
+            <ul class="flag-list">
+              <li><code>--path &lt;file&gt;</code> path to the agent's MCP config file</li>
+              <li><code>--name &lt;label&gt;</code> friendly name shown in lists and prompts</li>
+            </ul>
+          </div>
+          <div class="term anim-term">
+            <div class="term-bar">
+              <span class="term-dots"><i></i><i></i><i></i></span>
+              <span class="term-title">register custom agent</span>
+              <button class="copy" data-copy='mcpsync add --path ~/my-agent/mcp.json --name "My Agent"'>copy</button>
+            </div>
+            <div class="term-body">
+              <div class="line" data-type='mcpsync add --path ~/my-agent/mcp.json --name "My Agent"'><span class="prompt">$</span> <span class="cmd"></span></div>
+              <div class="line"><span class="ok">✓</span>  Registered <span class="cyan">My Agent</span> → <span class="hint">~/.mcpsync/config.json</span></div>
+              <div class="line muted">  included in all future syncs</div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="slider-controls">
+        <button class="slider-arrow" data-dir="-1" aria-label="Previous command">←</button>
+        <div class="slider-dots" role="presentation">
+          <button class="dot is-active" data-slide="0" aria-label="Slide 1"></button>
+          <button class="dot" data-slide="1" aria-label="Slide 2"></button>
+          <button class="dot" data-slide="2" aria-label="Slide 3"></button>
+          <button class="dot" data-slide="3" aria-label="Slide 4"></button>
         </div>
-      </article>
+        <button class="slider-arrow" data-dir="1" aria-label="Next command">→</button>
+      </div>
     </div>
   </div>
 </section>

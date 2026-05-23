@@ -12,7 +12,7 @@ var noMaintain bool
 var CustomPaths = map[string]string{}
 
 // version is set at build time via -ldflags "-X github.com/anush-data-portfolio/MCPSync/cmd.version=vX.Y.Z"
-var version = "0.1.4"
+var version = "0.1.5"
 
 // commit and buildTime are set at build time via -ldflags.
 var commit = "unknown"
