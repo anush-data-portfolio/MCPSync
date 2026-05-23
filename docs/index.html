@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MCPSync — Sync MCP servers across every AI agent</title>
+  <meta name="description" content="One command to sync MCP server configs across Claude, Cursor, VS Code, Windsurf, Gemini, Copilot, Codex, Zed, Continue, Junie, and more." />
+  <meta name="color-scheme" content="dark light" />
+
+  <meta property="og:title" content="MCPSync — One command to sync MCP servers across every AI agent" />
+  <meta property="og:description" content="Add an MCP server once, sync it everywhere. 12 supported agents, atomic writes, automatic backups." />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<a href="#main" class="skip">Skip to content</a>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top" aria-label="MCPSync home">
+      <span class="brand-prompt">$</span><span class="brand-name">mcpsync</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#install">Install</a>
+      <a href="#commands">Commands</a>
+      <a href="#agents">Agents</a>
+      <a href="#how">How it works</a>
+      <a href="https://github.com/anush-data-portfolio/MCPSync" rel="noopener" target="_blank">GitHub →</a>
+    </nav>
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+      <span class="theme-icon" aria-hidden="true">◐</span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+<section id="top" class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <div class="eyebrow">
+        <span class="dot"></span>
+        <span>v0.1.4 · open source · MIT</span>
+      </div>
+      <h1>One command to sync MCP servers across <em>every</em> AI agent.</h1>
+      <p class="lede">
+        Add an MCP server to one agent and forget the rest? <strong>MCPSync</strong> reads every
+        agent's config, merges the servers into one deduplicated list, and writes back to all of them.
+        Atomic writes, automatic backups, zero runtime.
+      </p>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#install">Get started</a>
+        <a class="btn btn-ghost" href="https://github.com/anush-data-portfolio/MCPSync" target="_blank" rel="noopener">View on GitHub</a>
+      </div>
+
+      <ul class="badges">
+        <li><span class="check">✓</span> 12 agents supported</li>
+        <li><span class="check">✓</span> No runtime required</li>
+        <li><span class="check">✓</span> Backs up before writing</li>
+      </ul>
+    </div>
+
+    <aside class="hero-terminal" aria-label="Demo">
+      <div class="term">
+        <div class="term-bar">
+          <span class="term-dots"><i></i><i></i><i></i></span>
+          <span class="term-title">~/projects — mcpsync</span>
+          <button class="copy" data-copy="mcpsync now" title="Copy command">copy</button>
+        </div>
+        <div class="term-body">
+          <div class="line"><span class="prompt">$</span> <span class="cmd">mcpsync now</span></div>
+          <div class="line muted">↳ scanning 12 agents…</div>
+          <div class="line"><span class="ok">✓</span>  Claude Desktop          <span class="hint">3 servers</span></div>
+          <div class="line"><span class="ok">✓</span>  Claude Code             <span class="hint">2 servers</span></div>
+          <div class="line"><span class="ok">✓</span>  Cursor                  <span class="hint">4 servers</span></div>
+          <div class="line"><span class="ok">✓</span>  GitHub Copilot CLI      <span class="hint">2 servers</span></div>
+          <div class="line muted">↳ merged 6 unique servers · 0 conflicts</div>
+          <div class="line"><span class="ok">✓</span>  Wrote 4 configs · 4 backups</div>
+          <div class="line"><span class="prompt">$</span><span class="caret">▍</span></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section id="install" class="section">
+  <div class="wrap">
+    <h2 class="h">Install</h2>
+    <p class="sub">Pick the option that matches your setup — no runtime required once installed.</p>
+
+    <div class="tabs" role="tablist" aria-label="Install methods">
+      <button class="tab is-active" role="tab" aria-selected="true" data-tab="npm">npm</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="go">go install</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="binary">Pre-built binary</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="source">From source</button>
+    </div>
+
+    <div class="tab-panels">
+      <div class="panel is-active" data-panel="npm">
+        <div class="term">
+          <div class="term-bar">
+            <span class="term-dots"><i></i><i></i><i></i></span>
+            <span class="term-title">install via npm</span>
+            <button class="copy" data-copy="npm install -g @anushkrishnav/mcpsync&#10;mcpsync now">copy</button>
+          </div>
+          <div class="term-body">
+            <div class="line"><span class="prompt">$</span> <span class="cmd">npm install -g @anushkrishnav/mcpsync</span></div>
+            <div class="line"><span class="prompt">$</span> <span class="cmd">mcpsync now</span></div>
+          </div>
+        </div>
+        <p class="note">No Go required. The npm package downloads the correct pre-built binary for your platform. Needs Node 18+.</p>
+        <p class="note">Or one-shot with <code>npx</code>: <code>npx @anushkrishnav/mcpsync list</code></p>
+      </div>
+
+      <div class="panel" data-panel="go">
+        <div class="term">
+          <div class="term-bar">
+            <span class="term-dots"><i></i><i></i><i></i></span>
+            <span class="term-title">install via go</span>
+            <button class="copy" data-copy="go install github.com/anush-data-portfolio/MCPSync/mcpsync@latest">copy</button>
+          </div>
+          <div class="term-body">
+            <div class="line"><span class="prompt">$</span> <span class="cmd">go install github.com/anush-data-portfolio/MCPSync/mcpsync@latest</span></div>
+          </div>
+        </div>
+        <p class="note">Make sure <code>$(go env GOPATH)/bin</code> is on your <code>PATH</code>, then run <code>mcpsync now</code>.</p>
+      </div>
+
+      <div class="panel" data-panel="binary">
+        <div class="term">
+          <div class="term-bar">
+            <span class="term-dots"><i></i><i></i><i></i></span>
+            <span class="term-title">download a release binary</span>
+            <button class="copy" data-copy="curl -Lo mcpsync https://github.com/anush-data-portfolio/MCPSync/releases/latest/download/mcpsync-darwin-arm64&#10;chmod +x mcpsync && sudo mv mcpsync /usr/local/bin/">copy</button>
+          </div>
+          <div class="term-body">
+            <div class="line muted"># macOS (Apple Silicon)</div>
+            <div class="line"><span class="prompt">$</span> <span class="cmd">curl -Lo mcpsync https://github.com/anush-data-portfolio/MCPSync/releases/latest/download/mcpsync-darwin-arm64</span></div>
+            <div class="line"><span class="prompt">$</span> <span class="cmd">chmod +x mcpsync && sudo mv mcpsync /usr/local/bin/</span></div>
+            <div class="line muted"># Linux (x86_64) — swap the URL suffix to mcpsync-linux-amd64</div>
+          </div>
+        </div>
+        <p class="note">All builds available on the <a href="https://github.com/anush-data-portfolio/MCPSync/releases" rel="noopener" target="_blank">releases page</a>.</p>
+      </div>
+
+      <div class="panel" data-panel="source">
+        <div class="term">
+          <div class="term-bar">
+            <span class="term-dots"><i></i><i></i><i></i></span>
+            <span class="term-title">build from source</span>
+            <button class="copy" data-copy="git clone https://github.com/anush-data-portfolio/MCPSync&#10;cd MCPSync&#10;go build -o mcpsync .&#10;sudo mv mcpsync /usr/local/bin/">copy</button>
+          </div>
+          <div class="term-body">
+            <div class="line"><span class="prompt">$</span> <span class="cmd">git clone https://github.com/anush-data-portfolio/MCPSync</span></div>
+            <div class="line"><span class="prompt">$</span> <span class="cmd">cd MCPSync</span></div>
+            <div class="line"><span class="prompt">$</span> <span class="cmd">go build -o mcpsync .</span></div>
+            <div class="line"><span class="prompt">$</span> <span class="cmd">sudo mv mcpsync /usr/local/bin/</span></div>
+          </div>
+        </div>
+        <p class="note">Requires Go 1.21+. The compiled binary runs without Go installed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="commands" class="section section-alt">
+  <div class="wrap">
+    <h2 class="h">Commands</h2>
+    <p class="sub">Four commands cover every workflow. Run any of them with <code>--help</code> for full flags.</p>
+
+    <div class="cmd-grid">
+      <article class="cmd-card">
+        <header class="cmd-head">
+          <h3><span class="prompt">$</span> mcpsync now</h3>
+          <p>Auto-discover all agents, merge, and write back.</p>
+        </header>
+        <div class="term">
+          <div class="term-bar">
+            <span class="term-dots"><i></i><i></i><i></i></span>
+            <span class="term-title">interactive sync</span>
+          </div>
+          <div class="term-body">
+            <div class="line"><span class="prompt">$</span> <span class="cmd">mcpsync now</span></div>
+            <div class="line muted">? Select agents to include  ‹space› to toggle, ‹enter› to confirm</div>
+            <div class="line">  <span class="ok">◉</span> Claude Desktop          <span class="hint">3 servers</span></div>
+            <div class="line">  <span class="ok">◉</span> Claude Code             <span class="hint">2 servers</span></div>
+            <div class="line">  <span class="ok">◉</span> Cursor                  <span class="hint">4 servers</span></div>
+            <div class="line">  <span class="dim">◯</span> Zed                     <span class="hint">stdio only</span></div>
+            <div class="line muted">↳ Preview: 6 unique servers, 0 conflicts</div>
+            <div class="line"><span class="ok">✓</span>  Sync complete · 4 files written · 4 backups saved</div>
+          </div>
+        </div>
+        <ul class="flag-list">
+          <li><code>--no-maintain</code> skip <code>.old.json</code> backups</li>
+          <li><code>-p output.json</code> also dump merged config to a file</li>
+        </ul>
+      </article>
+
+      <article class="cmd-card">
+        <header class="cmd-head">
+          <h3><span class="prompt">$</span> mcpsync get</h3>
+          <p>Show the merged MCP server list. Colored table in terminal, clean JSON when piped.</p>
+        </header>
+        <div class="term">
+          <div class="term-bar">
+            <span class="term-dots"><i></i><i></i><i></i></span>
+            <span class="term-title">merged servers</span>
+          </div>
+          <div class="term-body">
+            <div class="line"><span class="prompt">$</span> <span class="cmd">mcpsync get</span></div>
+            <div class="line"></div>
+            <div class="line"><strong>MCP Servers (6)</strong></div>
+            <div class="line"></div>
+            <div class="line"><span class="cyan">kaggle-mcp</span>          <span class="blue">http</span>   https://www.kaggle.com/mcp   <span class="magenta">[headers]</span></div>
+            <div class="line"><span class="cyan">magicuidesign-mcp</span>   <span class="green">stdio</span>  <span class="yellow">npx</span> -y @magicuidesign/mcp@latest</div>
+            <div class="line"><span class="cyan">playwright</span>          <span class="green">stdio</span>  <span class="yellow">npx</span> -y @playwright/mcp@latest</div>
+            <div class="line"><span class="cyan">shadcn</span>              <span class="green">stdio</span>  <span class="yellow">npx</span> shadcn@latest mcp</div>
+            <div class="line"><span class="cyan">sqlite</span>              <span class="green">stdio</span>  <span class="yellow">npx</span> -y mcp-sqlite</div>
+            <div class="line"><span class="cyan">task-manager</span>        <span class="green">stdio</span>  <span class="yellow">task-manager</span></div>
+          </div>
+        </div>
+        <ul class="flag-list">
+          <li><code>mcpsync get raw</code> syntax-highlighted JSON in the terminal</li>
+          <li><code>mcpsync get &gt; merged.json</code> plain JSON to file (pipe auto-detected)</li>
+        </ul>
+      </article>
+
+      <article class="cmd-card">
+        <header class="cmd-head">
+          <h3><span class="prompt">$</span> mcpsync list</h3>
+          <p>Show all supported agents and whether their configs were found.</p>
+        </header>
+        <div class="term">
+          <div class="term-bar">
+            <span class="term-dots"><i></i><i></i><i></i></span>
+            <span class="term-title">discover agents</span>
+          </div>
+          <div class="term-body">
+            <div class="line"><span class="prompt">$</span> <span class="cmd">mcpsync list</span></div>
+            <div class="line"><span class="ok">✓</span>  Claude Desktop          <span class="hint">~/Library/…/claude_desktop_config.json</span>   <span class="cyan">3 servers</span></div>
+            <div class="line"><span class="ok">✓</span>  Claude Code             <span class="hint">~/.claude.json</span>                              <span class="cyan">2 servers</span></div>
+            <div class="line"><span class="ok">✓</span>  GitHub Copilot CLI      <span class="hint">~/.copilot/mcp-config.json</span>                 <span class="cyan">2 servers</span></div>
+            <div class="line"><span class="dim">✗  Cursor                  ~/.cursor/mcp.json                              [not found]</span></div>
+            <div class="line"><span class="dim">✗  VS Code                 ~/.vscode/mcp.json                              [not found]</span></div>
+            <div class="line muted">…12 agents probed</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="cmd-card">
+        <header class="cmd-head">
+          <h3><span class="prompt">$</span> mcpsync add</h3>
+          <p>Register a custom agent config that MCPSync didn't auto-detect.</p>
+        </header>
+        <div class="term">
+          <div class="term-bar">
+            <span class="term-dots"><i></i><i></i><i></i></span>
+            <span class="term-title">register custom agent</span>
+          </div>
+          <div class="term-body">
+            <div class="line"><span class="prompt">$</span> <span class="cmd">mcpsync add --path ~/my-agent/mcp.json --name "My Agent"</span></div>
+            <div class="line"><span class="ok">✓</span>  Registered <span class="cyan">My Agent</span> → <span class="hint">~/.mcpsync/config.json</span></div>
+            <div class="line muted">  included in all future syncs</div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="agents" class="section">
+  <div class="wrap">
+    <h2 class="h">Supported agents</h2>
+    <p class="sub">12 agents out of the box. Don't see yours? <a href="https://github.com/anush-data-portfolio/MCPSync/issues/new?template=agent-request.yml" target="_blank" rel="noopener">Open a request</a> — adding one is usually ~10 lines of Go.</p>
+
+    <div class="agent-grid">
+      <div class="agent-group">
+        <h3>Claude</h3>
+        <ul>
+          <li><strong>Claude Desktop</strong><code>~/Library/Application Support/Claude/claude_desktop_config.json</code></li>
+          <li><strong>Claude Code</strong><code>~/.claude.json</code></li>
+        </ul>
+      </div>
+
+      <div class="agent-group">
+        <h3>IDEs &amp; coding agents</h3>
+        <ul>
+          <li><strong>Cursor</strong><code>~/.cursor/mcp.json</code></li>
+          <li><strong>VS Code</strong><code>~/.vscode/mcp.json</code></li>
+          <li><strong>Windsurf</strong><code>~/.codeium/windsurf/mcp_config.json</code></li>
+          <li><strong>Zed</strong><code>~/.config/zed/settings.json</code></li>
+          <li><strong>Continue</strong><code>~/.continue/config.json</code></li>
+          <li><strong>Junie</strong><code>~/.junie/mcp/mcp.json</code></li>
+        </ul>
+      </div>
+
+      <div class="agent-group">
+        <h3>CLIs</h3>
+        <ul>
+          <li><strong>Gemini CLI</strong><code>~/.gemini/settings.json</code></li>
+          <li><strong>OpenAI Codex CLI</strong><code>~/.codex/config.json</code></li>
+          <li><strong>GitHub Copilot CLI</strong><code>~/.copilot/mcp-config.json</code></li>
+          <li><strong>Copilot (VS Code)</strong><code>~/.config/github-copilot/mcp.json</code></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how" class="section section-alt">
+  <div class="wrap how-grid">
+    <div>
+      <h2 class="h">How it works</h2>
+      <p class="sub">A predictable, auditable pipeline. Read everything, normalize to one shape, merge, write atomically, back up the originals.</p>
+
+      <ol class="steps">
+        <li><strong>Read</strong> — each adapter reads its config and normalizes to a common <code>NormalizedServer</code> struct (type, command, args, env, url, headers).</li>
+        <li><strong>Merge</strong> — servers are deduplicated by name. Conflicts surface interactively with side-by-side diffs.</li>
+        <li><strong>Write</strong> — adapters convert back to each agent's native format and write atomically (<code>.tmp</code> → rename).</li>
+        <li><strong>Backup</strong> — every modified file is copied to <code>filename.old.json</code> first (toggle with <code>--no-maintain</code>).</li>
+      </ol>
+    </div>
+
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dots"><i></i><i></i><i></i></span>
+        <span class="term-title">conflict resolution</span>
+      </div>
+      <div class="term-body">
+        <div class="line muted">──────────────────────────────────────────────</div>
+        <div class="line">Conflict 1 of 1: <span class="cyan">"playwright"</span></div>
+        <div class="line muted">──────────────────────────────────────────────</div>
+        <div class="line"></div>
+        <div class="line">[A]  Claude Desktop       <span class="hint">(higher priority)</span></div>
+        <div class="line">     type:      <span class="green">stdio</span></div>
+        <div class="line">     command:   <span class="yellow">npx</span> @playwright/mcp@latest</div>
+        <div class="line"></div>
+        <div class="line">[B]  GitHub Copilot CLI   <span class="hint">(lower priority)</span></div>
+        <div class="line">     type:      <span class="green">stdio</span></div>
+        <div class="line">     command:   <span class="yellow">npx</span> @playwright/mcp@latest</div>
+        <div class="line"></div>
+        <div class="line">&gt; <span class="ok">Keep</span>    "playwright" from Claude Desktop</div>
+        <div class="line">  Use     "playwright" from GitHub Copilot CLI</div>
+        <div class="line">  Rename  and keep both</div>
+        <div class="line">  Exclude from this sync</div>
+        <div class="line">  Delete  from all agents</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap callout">
+    <div>
+      <h2 class="h h-small">Open source. Community-driven.</h2>
+      <p class="sub">MIT licensed. Add an agent in ~10 lines of Go, file a bug, or just say hi.</p>
+    </div>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/anush-data-portfolio/MCPSync" target="_blank" rel="noopener">Star on GitHub</a>
+      <a class="btn btn-ghost" href="https://github.com/anush-data-portfolio/MCPSync/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing guide</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <div>
+      <span class="brand"><span class="brand-prompt">$</span><span class="brand-name">mcpsync</span></span>
+      <p class="muted small">© 2026 anushkrishnav · MIT License</p>
+    </div>
+    <nav class="footer-links" aria-label="Footer">
+      <a href="https://github.com/anush-data-portfolio/MCPSync" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/anush-data-portfolio/MCPSync/releases" target="_blank" rel="noopener">Releases</a>
+      <a href="https://www.npmjs.com/package/@anushkrishnav/mcpsync" target="_blank" rel="noopener">npm</a>
+      <a href="https://github.com/anush-data-portfolio/MCPSync/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog</a>
+      <a href="citation.md">Cite</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="assets/script.js" defer></script>
+</body>
+</html>
