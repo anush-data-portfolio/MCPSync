@@ -10,7 +10,7 @@
 
 **One command to sync MCP server configs across all your AI coding agents.**
 
-If you use multiple AI agents — Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, Gemini CLI, Copilot, Codex, Zed, and more — you know the pain: you add an MCP server to one agent and forget all the others. MCPSync fixes that.
+If you use multiple AI agents — Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, Gemini CLI, Antigravity, Copilot, Codex, Zed, and more — you know the pain: you add an MCP server to one agent and forget all the others. MCPSync fixes that.
 
 ```bash
 mcpsync now
@@ -182,7 +182,7 @@ MCPSync saves it to `~/.mcpsync/config.json` and includes it in future syncs.
 
 ## Supported Agents
 
-MCPSync currently supports **12 agents** out of the box. If yours isn't listed, [request it](https://github.com/anush-data-portfolio/MCPSync/issues/new?template=agent-request.yml) or add it yourself — it's usually ~10 lines of Go.
+MCPSync currently supports **13 agents** out of the box. If yours isn't listed, [request it](https://github.com/anush-data-portfolio/MCPSync/issues/new?template=agent-request.yml) or add it yourself — it's usually ~10 lines of Go.
 
 ### Claude (Anthropic)
 
@@ -207,6 +207,7 @@ MCPSync currently supports **12 agents** out of the box. If yours isn't listed, 
 | Agent | Config File | Key | Notes |
 |-------|-------------|-----|-------|
 | **Gemini CLI** | `~/.gemini/settings.json` | `mcpServers` | Google's Gemini CLI |
+| **Antigravity (agy)** | `~/.gemini/antigravity/mcp_config.json` | `mcpServers` | Google DeepMind's Antigravity CLI |
 | **OpenAI Codex CLI** | `~/.codex/config.json` | `mcpServers` | OpenAI's open-source CLI |
 | **GitHub Copilot CLI** | `~/.copilot/mcp-config.json` | `mcpServers` | Uses `type: "local"` instead of `"stdio"` — MCPSync normalizes automatically |
 | **GitHub Copilot (VS Code)** | `~/.config/github-copilot/mcp.json` | `servers` | Different key name — MCPSync handles it |
@@ -216,6 +217,9 @@ MCPSync currently supports **12 agents** out of the box. If yours isn't listed, 
 - **Use `mcpsync add --path`** to register any custom config file right now
 - **[Open an agent request issue](https://github.com/anush-data-portfolio/MCPSync/issues/new?template=agent-request.yml)** — include the config file path and a sample snippet if you have one
 - **[Submit a PR](CONTRIBUTING.md)** — adding a new agent is usually ~10 lines of Go
+
+> **Want your preferred agent supported?**
+> [Open an issue](https://github.com/anush-data-portfolio/MCPSync/issues/new?template=agent-request.yml) with the agent name, its MCP config file path, and a sample config snippet — or [submit a PR](CONTRIBUTING.md) directly. New adapters are small (~10 lines of Go) and very welcome!
 
 ---
 
@@ -269,7 +273,7 @@ If two agents have the same server name with different configurations, MCPSync p
 | **Exclude** | Skip this server; it won't be written to any agent this sync |
 | **Delete** | Remove from the merged list; effectively deleted from all synced agents |
 
-Priority order (determines which version is [A]): Claude Desktop → Claude Code → Cursor → VS Code → Windsurf → Gemini → Copilot CLI → Copilot VS Code → Continue → Junie → Zed → Codex
+Priority order (determines which version is [A]): Claude Desktop → Claude Code → Cursor → VS Code → Windsurf → Gemini → Antigravity → Copilot CLI → Copilot VS Code → Continue → Junie → Zed → Codex
 
 ### Schema normalization
 

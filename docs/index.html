@@ -4,11 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MCPSync — Sync MCP servers across every AI agent</title>
-  <meta name="description" content="One command to sync MCP server configs across Claude, Cursor, VS Code, Windsurf, Gemini, Copilot, Codex, Zed, Continue, Junie, and more." />
+  <meta name="description" content="One command to sync MCP server configs across Claude, Cursor, VS Code, Windsurf, Gemini, Antigravity, Copilot, Codex, Zed, Continue, Junie, and more." />
   <meta name="color-scheme" content="dark light" />
 
   <meta property="og:title" content="MCPSync — One command to sync MCP servers across every AI agent" />
-  <meta property="og:description" content="Add an MCP server once, sync it everywhere. 12 supported agents, atomic writes, automatic backups." />
+  <meta property="og:description" content="Add an MCP server once, sync it everywhere. 13 supported agents, atomic writes, automatic backups." />
   <meta property="og:type" content="website" />
 
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
@@ -61,7 +61,7 @@
       </div>
 
       <ul class="badges">
-        <li><span class="check">✓</span> 12 agents supported</li>
+        <li><span class="check">✓</span> 13 agents supported</li>
         <li><span class="check">✓</span> No runtime required</li>
         <li><span class="check">✓</span> Backs up before writing</li>
       </ul>
@@ -76,7 +76,7 @@
         </div>
         <div class="term-body">
           <div class="line"><span class="prompt">$</span> <span class="cmd">mcpsync now</span></div>
-          <div class="line muted">↳ scanning 12 agents…</div>
+          <div class="line muted">↳ scanning 13 agents…</div>
           <div class="line"><span class="ok">✓</span>  Claude Desktop          <span class="hint">3 servers</span></div>
           <div class="line"><span class="ok">✓</span>  Claude Code             <span class="hint">2 servers</span></div>
           <div class="line"><span class="ok">✓</span>  Cursor                  <span class="hint">4 servers</span></div>
@@ -269,7 +269,7 @@
               <div class="line"><span class="ok">✓</span>  GitHub Copilot CLI      <span class="hint">~/.copilot/mcp-config.json</span>                 <span class="cyan">2 servers</span></div>
               <div class="line"><span class="dim">✗  Cursor                  ~/.cursor/mcp.json                              [not found]</span></div>
               <div class="line"><span class="dim">✗  VS Code                 ~/.vscode/mcp.json                              [not found]</span></div>
-              <div class="line muted">…12 agents probed</div>
+              <div class="line muted">…13 agents probed</div>
             </div>
           </div>
         </article>
@@ -314,37 +314,174 @@
 <section id="agents" class="section">
   <div class="wrap">
     <h2 class="h">Supported agents</h2>
-    <p class="sub">12 agents out of the box. Don't see yours? <a href="https://github.com/anush-data-portfolio/MCPSync/issues/new?template=agent-request.yml" target="_blank" rel="noopener">Open a request</a> — adding one is usually ~10 lines of Go.</p>
+    <p class="sub">13 agents out of the box. Don't see yours? <a href="https://github.com/anush-data-portfolio/MCPSync/issues/new?template=agent-request.yml" target="_blank" rel="noopener">Open a request</a> — adding one is usually ~10 lines of Go.</p>
 
-    <div class="agent-grid">
-      <div class="agent-group">
-        <h3>Claude</h3>
-        <ul>
-          <li><strong>Claude Desktop</strong><code>~/Library/Application Support/Claude/claude_desktop_config.json</code></li>
-          <li><strong>Claude Code</strong><code>~/.claude.json</code></li>
-        </ul>
+    <div class="agent-card-grid">
+
+      <!-- Claude Desktop -->
+      <div class="agent-card">
+        <div class="agent-card-icon agent-icon-claude">
+          <img src="assets/icons/claude.svg" alt="Claude" width="36" height="36" />
+        </div>
+        <div class="agent-card-body">
+          <strong>Claude Desktop</strong>
+          <code>~/Library/…/claude_desktop_config.json</code>
+        </div>
       </div>
 
-      <div class="agent-group">
-        <h3>IDEs &amp; coding agents</h3>
-        <ul>
-          <li><strong>Cursor</strong><code>~/.cursor/mcp.json</code></li>
-          <li><strong>VS Code</strong><code>~/.vscode/mcp.json</code></li>
-          <li><strong>Windsurf</strong><code>~/.codeium/windsurf/mcp_config.json</code></li>
-          <li><strong>Zed</strong><code>~/.config/zed/settings.json</code></li>
-          <li><strong>Continue</strong><code>~/.continue/config.json</code></li>
-          <li><strong>Junie</strong><code>~/.junie/mcp/mcp.json</code></li>
-        </ul>
+      <!-- Claude Code -->
+      <div class="agent-card">
+        <div class="agent-card-icon agent-icon-claude">
+          <img src="assets/icons/claude.svg" alt="Claude" width="36" height="36" />
+        </div>
+        <div class="agent-card-body">
+          <strong>Claude Code</strong>
+          <code>~/.claude.json</code>
+        </div>
       </div>
 
-      <div class="agent-group">
-        <h3>CLIs</h3>
-        <ul>
-          <li><strong>Gemini CLI</strong><code>~/.gemini/settings.json</code></li>
-          <li><strong>OpenAI Codex CLI</strong><code>~/.codex/config.json</code></li>
-          <li><strong>GitHub Copilot CLI</strong><code>~/.copilot/mcp-config.json</code></li>
-          <li><strong>Copilot (VS Code)</strong><code>~/.config/github-copilot/mcp.json</code></li>
-        </ul>
+      <!-- Cursor -->
+      <div class="agent-card">
+        <div class="agent-card-icon agent-icon-cursor">
+          <img src="assets/icons/cursor.svg" alt="Cursor" width="36" height="36" />
+        </div>
+        <div class="agent-card-body">
+          <strong>Cursor</strong>
+          <code>~/.cursor/mcp.json</code>
+        </div>
+      </div>
+
+      <!-- VS Code -->
+      <div class="agent-card">
+        <div class="agent-card-icon agent-icon-vscode">
+          <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M74.6 6.5L50.4 28.7 32.5 14 25 18.4l20 18L25 54.4l7.5 4.4 18-14.7 24.1 22.3 7.5-3.9V10.4L74.6 6.5zm0 66.3L53.5 51l21.1-21.8v43.6z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="agent-card-body">
+          <strong>VS Code</strong>
+          <code>~/.vscode/mcp.json</code>
+        </div>
+      </div>
+
+      <!-- Windsurf -->
+      <div class="agent-card">
+        <div class="agent-card-icon agent-icon-windsurf">
+          <img src="assets/icons/windsurf.svg" alt="Windsurf" width="36" height="36" />
+        </div>
+        <div class="agent-card-body">
+          <strong>Windsurf</strong>
+          <code>~/.codeium/windsurf/mcp_config.json</code>
+        </div>
+      </div>
+
+      <!-- Zed -->
+      <div class="agent-card">
+        <div class="agent-card-icon agent-icon-zed">
+          <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M15 20h50l-50 60h50" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="agent-card-body">
+          <strong>Zed</strong>
+          <code>~/.config/zed/settings.json</code>
+        </div>
+      </div>
+
+      <!-- Continue -->
+      <div class="agent-card">
+        <div class="agent-card-icon agent-icon-continue">
+          <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="50" cy="50" r="38" stroke="currentColor" stroke-width="9"/>
+            <path d="M38 38l24 12-24 12V38z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="agent-card-body">
+          <strong>Continue</strong>
+          <code>~/.continue/config.json</code>
+        </div>
+      </div>
+
+      <!-- Junie -->
+      <div class="agent-card">
+        <div class="agent-card-icon agent-icon-junie">
+          <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="12" y="12" width="76" height="76" rx="18" stroke="currentColor" stroke-width="9"/>
+            <path d="M50 30v28l16 14" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="agent-card-body">
+          <strong>Junie</strong>
+          <code>~/.junie/mcp/mcp.json</code>
+        </div>
+      </div>
+
+      <!-- Gemini CLI -->
+      <div class="agent-card">
+        <div class="agent-card-icon agent-icon-gemini">
+          <img src="assets/icons/gemini.svg" alt="Gemini" width="36" height="36" />
+        </div>
+        <div class="agent-card-body">
+          <strong>Gemini CLI</strong>
+          <code>~/.gemini/settings.json</code>
+        </div>
+      </div>
+
+      <!-- Antigravity -->
+      <div class="agent-card agent-card-featured">
+        <div class="agent-card-icon agent-icon-antigravity">
+          <img src="assets/icons/antigravity.svg" alt="Antigravity" width="36" height="36" />
+        </div>
+        <div class="agent-card-body">
+          <strong>Antigravity <span class="new-badge">NEW</span></strong>
+          <code>~/.gemini/antigravity/mcp_config.json</code>
+        </div>
+      </div>
+
+      <!-- OpenAI Codex CLI -->
+      <div class="agent-card">
+        <div class="agent-card-icon agent-icon-codex">
+          <img src="assets/icons/codex.svg" alt="Codex" width="36" height="36" />
+        </div>
+        <div class="agent-card-body">
+          <strong>OpenAI Codex CLI</strong>
+          <code>~/.codex/config.json</code>
+        </div>
+      </div>
+
+      <!-- GitHub Copilot CLI -->
+      <div class="agent-card">
+        <div class="agent-card-icon agent-icon-copilot">
+          <img src="assets/icons/copilot.svg" alt="GitHub Copilot" width="36" height="36" />
+        </div>
+        <div class="agent-card-body">
+          <strong>GitHub Copilot CLI</strong>
+          <code>~/.copilot/mcp-config.json</code>
+        </div>
+      </div>
+
+      <!-- Copilot VS Code -->
+      <div class="agent-card">
+        <div class="agent-card-icon agent-icon-copilot">
+          <img src="assets/icons/copilot.svg" alt="GitHub Copilot" width="36" height="36" />
+        </div>
+        <div class="agent-card-body">
+          <strong>Copilot (VS Code)</strong>
+          <code>~/.config/github-copilot/mcp.json</code>
+        </div>
+      </div>
+
+    </div><!-- /.agent-card-grid -->
+
+    <div class="agent-request-cta">
+      <div class="agent-request-icon">＋</div>
+      <div class="agent-request-body">
+        <h3>Want your preferred agent supported?</h3>
+        <p>If your agent isn't listed, it's easy to add. Just tell us the config file path — or submit the adapter yourself (usually ~10 lines of Go).</p>
+        <div class="agent-request-links">
+          <a class="btn btn-primary btn-sm" href="https://github.com/anush-data-portfolio/MCPSync/issues/new?template=agent-request.yml" target="_blank" rel="noopener">Open an issue →</a>
+          <a class="btn btn-ghost btn-sm" href="https://github.com/anush-data-portfolio/MCPSync/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Submit a PR →</a>
+        </div>
       </div>
     </div>
   </div>
