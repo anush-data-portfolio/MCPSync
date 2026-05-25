@@ -5,6 +5,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.1.6] — 2026-05-25
+
+### Added
+
+- **`mcpsync now --use-config <file>`** — push a single source-of-truth MCP config file to every detected agent in one shot. The file uses the same `{"mcpServers": {...}}` shape that `mcpsync now --path` produces, so configs round-trip cleanly. Discovery merge and conflict-resolution are skipped; every detected agent's existing non-MCP fields are preserved. Intended for agent sandboxes where you want every agent to share an identical tool surface.
+
+---
+
 ## [0.1.4] — 2026-05-16
 
 ### Fixed

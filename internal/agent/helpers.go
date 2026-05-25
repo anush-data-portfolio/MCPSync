@@ -286,6 +286,13 @@ func normalizeServersMap(raw map[string]any, sourceAgent string) []NormalizedSer
 	return servers
 }
 
+// NormalizeServersMap is the exported entry point used by callers outside the
+// agent package (e.g. the config-file loader) to turn a raw name->server map
+// into normalized servers.
+func NormalizeServersMap(raw map[string]any, sourceAgent string) []NormalizedServer {
+	return normalizeServersMap(raw, sourceAgent)
+}
+
 func denormalizeServersSlice(servers []NormalizedServer, typeOverride string) map[string]any {
 	out := map[string]any{}
 	for _, s := range servers {
